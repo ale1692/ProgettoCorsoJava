@@ -1,57 +1,82 @@
 package it.ariadne.dao;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.TreeMap;
 
 import it.ariadne.users.User;
 
-public class UserDaoImpl implements UserDao {
+public class UserDaoImpl implements Dao<String, User> {
 
-	// mappa con chiave il codice fiscale al posto del database
-	TreeMap<String, User> utenti;
+	// mappa con chiave il codice fiscale
+	TreeMap<String, User> mappaUtenti;
 
 	public UserDaoImpl() {
-		utenti = new TreeMap<>();
+		mappaUtenti = new TreeMap<>();
 	}
 
 	@Override
-	public void addUser(User utente) {
+	public void addRecord(User utente) {
+		if (!mappaUtenti.containsKey(utente.getFiscalCode())) {
 
-		if(!utenti.containsKey(utente.getFiscalCode())) {
-			
-			utenti.put(utente.getFiscalCode(), utente);
-		}else {
-			System.out.println("Utente: " + utente.getFiscalCode() + ", already existed in database");
+			mappaUtenti.put(utente.getFiscalCode(), utente);
+			System.out.println("Utente: " + utente.getFiscalCode() + ", added in the database");
+
+		} else {
+			System.out.println("Utente: " + utente.getFiscalCode() + ", already existed in the database");
 		}
-			
+
 	}
 
 	@Override
-	public TreeMap<String, User> getAllUSers() {
-		return utenti;
-	}
+	public List<User> getAllRecords() {
 
-	@Override
-	public User getUser(String codiceFiscale) {
-		return utenti.get(codiceFiscale);
-	}
+		List<User> listaUser = new ArrayList<>();
 
-	@Override
-	public void deleteUser(User utente) {
-		utenti.remove(utente.getFiscalCode());
-		System.out.println("Utente: " + utente.getFiscalCode() + ", deleted from database");
-
-	}
-	
-	@Override
-	public void updateUser(User utente) {
-		
-		if(!utenti.containsKey(utente.getFiscalCode())) {
-			
-			System.out.println("Utente does not existed in database");
-		}else {
-			utenti.put(utente.getFiscalCode(), utente);
+		for (Iterator<String> iterator = mappaUtenti.keySet().iterator(); iterator.hasNext();) {
+			String persona = (String) iterator.next();
+			listaUser.add(mappaUtenti.get(persona));
 		}
-			
+
+		return listaUser;
+	}
+
+	@Override
+	public User getRecord(String fiscalCode) {
+
+		if (mappaUtenti.containsKey(fiscalCode)) {
+			return mappaUtenti.get(fiscalCode);
+		} else {
+			System.out.println("Utente: " + fiscalCode + ", not present in the database");
+			return null;
+		}
+	}
+
+	@Override
+	public void deleteRecord(User utente) {
+
+		if (mappaUtenti.containsKey(utente.getFiscalCode())) {
+
+			mappaUtenti.remove(utente.getFiscalCode());
+			System.out.println("Utente: " + utente.getFiscalCode() + ", deleted from the database");
+
+		} else {
+			System.out.println("Utente: " + utente.getFiscalCode() + ", not present in the database");
+		}
+
+	}
+
+	@Override
+	public void updateRecord(User utente) {
+		if (!mappaUtenti.containsKey(utente.getFiscalCode())) {
+
+			System.out.println("Utente does not exist in database");
+		} else {
+			mappaUtenti.put(utente.getFiscalCode(), utente);
+			System.out.println("Utente: " + utente.getFiscalCode() + ", updated in the database");
+		}
+
 	}
 
 }

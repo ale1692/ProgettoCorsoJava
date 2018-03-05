@@ -1,25 +1,25 @@
-package it.ariadne.model;
+package it.ariadne.booking;
 
 import java.util.Date;
 
 import it.ariadne.resources.Resource;
 import it.ariadne.users.User;
 
-public class Prenotazione {
+public class Booking {
 
 	private User utente;
 	private Resource risorsa;
 	private Date startRisorsa;
 	private Date endRisorsa;
-	private int identificativo;
+	private int id;
 
-	public Prenotazione(User utente, Resource risorsa, Date startRisorsa, Date endRisorsa, int identificativo) {
+	public Booking(User utente, Resource risorsa, Date startRisorsa, Date endRisorsa, int id) {
 		super();
 		this.utente = utente;
 		this.risorsa = risorsa;
 		this.startRisorsa = startRisorsa;
 		this.endRisorsa = endRisorsa;
-		this.identificativo = identificativo;
+		this.id = id;
 	}
 
 	public User getUtente() {
@@ -54,12 +54,12 @@ public class Prenotazione {
 		this.endRisorsa = endRisorsa;
 	}
 
-	public int getIdentificativo() {
-		return identificativo;
+	public int getId() {
+		return id;
 	}
 
-	public void setIdentificativo(int identificativo) {
-		this.identificativo = identificativo;
+	public void setId(int id) {
+		this.id = id;
 	}
 
 }

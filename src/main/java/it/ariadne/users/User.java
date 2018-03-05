@@ -1,7 +1,5 @@
 package it.ariadne.users;
 
-import it.ariadne.test.Role;
-
 public class User {
 
 	private String name;

@@ -1,4 +1,4 @@
-package it.ariadne.test;
+package it.ariadne.users;
 
 public enum Role {
 

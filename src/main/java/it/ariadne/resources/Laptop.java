@@ -3,13 +3,13 @@ package it.ariadne.resources;
 public class Laptop extends Resource {
 
 	private int ramCapacity;
-	private int hdCapacity;
+	private int numberCores;
 	private BrandPc brand;
 
-	public Laptop(int code, boolean available, int ramCapacity, int hdCapacity, BrandPc brand) {
+	public Laptop(String code, boolean available, int ramCapacity, int numberCores, BrandPc brand) {
 		super(code, available);
 		this.ramCapacity = ramCapacity;
-		this.hdCapacity = hdCapacity;
+		this.numberCores = numberCores;
 		this.brand = brand;
 	}
 
@@ -21,12 +21,12 @@ public class Laptop extends Resource {
 		this.ramCapacity = ramCapacity;
 	}
 
-	public int getCapienzaHd() {
-		return hdCapacity;
+	public int getNumberCores() {
+		return numberCores;
 	}
 
-	public void setCapienzaHd(int hdCapacity) {
-		this.hdCapacity = hdCapacity;
+	public void setNumberCores(int numberCores) {
+		this.numberCores = numberCores;
 	}
 
 	public BrandPc getBrand() {
@@ -50,7 +50,7 @@ public class Laptop extends Resource {
 	@Override
 	public String toString() {
 
-		return "Laptop ID: " + this.getCode() + " Ram: " + this.getCapienzaRam() + " HD: " + this.getCapienzaHd()
+		return "Laptop ID: " + this.getCode() + " Ram: " + this.getCapienzaRam() + " Cores: " + this.getNumberCores()
 				+ " Brand: " + this.getBrand();
 	}
 

@@ -1,4 +1,4 @@
-package it.ariadne.model;
+package it.ariadne.booking;
 
 import java.util.Date;
 import java.util.Iterator;
@@ -8,9 +8,9 @@ import it.ariadne.resources.Resource;
 
 public class Disponibile {
 
-	TreeMap<Long, Prenotazione> prenotazioni;
+	TreeMap<Long, Booking> prenotazioni;
 
-	public Disponibile(TreeMap<Long, Prenotazione> prenotazioni) {
+	public Disponibile(TreeMap<Long, Booking> prenotazioni) {
 		this.prenotazioni = prenotazioni;
 	}
 

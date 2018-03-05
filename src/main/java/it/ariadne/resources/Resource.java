@@ -2,20 +2,19 @@ package it.ariadne.resources;
 
 public abstract class Resource {
 
-	private int code;
+	private String code;
 	private boolean available;
 
-	public Resource(int code, boolean available) {
-		super();
+	public Resource(String code, boolean available) {
 		this.code = code;
 		this.available = available;
 	}
 
-	public int getCode() {
+	public String getCode() {
 		return code;
 	}
 
-	public void setCode(int code) {
+	public void setCode(String code) {
 		this.code = code;
 	}
 
