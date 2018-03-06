@@ -7,7 +7,7 @@ public abstract class Resource {
 
 	public Resource(String code, boolean available) {
 		this.code = code;
-		this.available = available;
+		setAvailable(true);
 	}
 
 	public String getCode() {

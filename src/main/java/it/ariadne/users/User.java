@@ -4,17 +4,15 @@ public class User {
 
 	private String name;
 	private String surname;
-	private String fiscalCode;
 	private String password;
 	private String userName;
 	private boolean isAdmin;
 	private Role role;
 
-	public User(String name, String surname, String fiscalCode, String password, String userName, Role role) {
+	public User(String name, String surname, String password, String userName, Role role) {
 
 		this.name = name;
 		this.surname = surname;
-		this.fiscalCode = fiscalCode;
 		this.password = password;
 		this.userName = userName;
 		this.role = role;
@@ -35,14 +33,6 @@ public class User {
 
 	public void setSurname(String surname) {
 		this.surname = surname;
-	}
-
-	public String getFiscalCode() {
-		return fiscalCode;
-	}
-
-	public void setFiscalCode(String fiscalCode) {
-		this.fiscalCode = fiscalCode;
 	}
 
 	public String getPassword() {

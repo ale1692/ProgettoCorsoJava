@@ -18,13 +18,13 @@ public class UserDaoImpl implements Dao<String, User> {
 
 	@Override
 	public void addRecord(User utente) {
-		if (!mappaUtenti.containsKey(utente.getFiscalCode())) {
+		if (!mappaUtenti.containsKey(utente.getUserName())) {
 
-			mappaUtenti.put(utente.getFiscalCode(), utente);
-			System.out.println("Utente: " + utente.getFiscalCode() + ", added in the database");
+			mappaUtenti.put(utente.getUserName(), utente);
+			System.out.println("Utente: " + utente.getUserName() + ", added in the database");
 
 		} else {
-			System.out.println("Utente: " + utente.getFiscalCode() + ", already existed in the database");
+			System.out.println("Utente: " + utente.getUserName() + ", already existed in the database");
 		}
 
 	}
@@ -43,12 +43,12 @@ public class UserDaoImpl implements Dao<String, User> {
 	}
 
 	@Override
-	public User getRecord(String fiscalCode) {
+	public User getRecord(String userName) {
 
-		if (mappaUtenti.containsKey(fiscalCode)) {
-			return mappaUtenti.get(fiscalCode);
+		if (mappaUtenti.containsKey(userName)) {
+			return mappaUtenti.get(userName);
 		} else {
-			System.out.println("Utente: " + fiscalCode + ", not present in the database");
+			System.out.println("Utente: " + userName + ", not present in the database");
 			return null;
 		}
 	}
@@ -56,25 +56,25 @@ public class UserDaoImpl implements Dao<String, User> {
 	@Override
 	public void deleteRecord(User utente) {
 
-		if (mappaUtenti.containsKey(utente.getFiscalCode())) {
+		if (mappaUtenti.containsKey(utente.getUserName())) {
 
-			mappaUtenti.remove(utente.getFiscalCode());
-			System.out.println("Utente: " + utente.getFiscalCode() + ", deleted from the database");
+			mappaUtenti.remove(utente.getUserName());
+			System.out.println("Utente: " + utente.getUserName() + ", deleted from the database");
 
 		} else {
-			System.out.println("Utente: " + utente.getFiscalCode() + ", not present in the database");
+			System.out.println("Utente: " + utente.getUserName() + ", not present in the database");
 		}
 
 	}
 
 	@Override
 	public void updateRecord(User utente) {
-		if (!mappaUtenti.containsKey(utente.getFiscalCode())) {
+		if (!mappaUtenti.containsKey(utente.getUserName())) {
 
 			System.out.println("Utente does not exist in database");
 		} else {
-			mappaUtenti.put(utente.getFiscalCode(), utente);
-			System.out.println("Utente: " + utente.getFiscalCode() + ", updated in the database");
+			mappaUtenti.put(utente.getUserName(), utente);
+			System.out.println("Utente: " + utente.getUserName() + ", updated in the database");
 		}
 
 	}

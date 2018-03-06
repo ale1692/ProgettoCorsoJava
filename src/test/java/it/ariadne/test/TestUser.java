@@ -6,13 +6,15 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import it.ariadne.Controller.UserController;
 import it.ariadne.dao.UserDaoImpl;
+import it.ariadne.users.Admin;
 import it.ariadne.users.Role;
 import it.ariadne.users.User;
 
 public class TestUser {
 
-	private UserDaoImpl userImpl;
+	private UserController<User> userController;
 	private List<User> lista;
 	private User u1;
 	private User u2;
@@ -21,41 +23,55 @@ public class TestUser {
 	@Before
 	public void setup() {
 
-		userImpl = new UserDaoImpl();
-		lista = userImpl.getAllRecords();
-		u1 = new User("Marco", "Rossi", "MRCRSS68D07F205B", "prova99", "marco.rossi", Role.DEVELOPER);
-		u2 = new User("Marco", "Rossi", "MRCRSS68D07F205B", "prova99", "marco.rossi", Role.MARKETING);
-		u3 = new User("Sara", "Fumarola", "SRAFRL51D42C351U", "asd123", "sarfum", Role.SECRETARY);
-		userImpl.addRecord(u1);
+		userController = new UserController<User>(new UserDaoImpl());
+		u1 = new User("Marco", "Rossi", "prova99", "marco.rossi", Role.DEVELOPER);
+		u2 = new User("Marco", "Rossi", "prova99", "marco.rossi", Role.MARKETING);
+		u3 = new User("Sara", "Fumarola", "asd123", "sarfum", Role.SECRETARY);
+		userController.addRecord(u1);
 
 	}
 
 	@Test
 	public void testAddUser() {
 
-		userImpl.addRecord(u3);
-		lista = userImpl.getAllRecords();
+		userController.addRecord(u3);
+		lista = userController.getAllRecords();
 		Assert.assertEquals("Utenti memorizzati nel DB", lista.size(), 2);
 	}
 
 	@Test
 	public void testUpdateUser() {
 
-		userImpl.updateRecord(u2);
-		lista = userImpl.getAllRecords();
+		userController.updateRecord(u2);
+		lista = userController.getAllRecords();
 		Assert.assertEquals("Utente modificato", lista.size(), 1);
 
-		Assert.assertEquals("Utente modificato", userImpl.getRecord(u2.getFiscalCode()).getRole(), u2.getRole());
+		Assert.assertEquals("Utente modificato", userController.getRecord(u2.getUserName()).getRole(), u2.getRole());
 	}
 
 	@Test
 	public void testDeleteUser() {
 
-		lista = userImpl.getAllRecords();
-		userImpl.deleteRecord(u1);
-		lista = userImpl.getAllRecords();
+		lista = userController.getAllRecords();
+		userController.deleteRecord(u1);
+		lista = userController.getAllRecords();
 		
 		Assert.assertEquals("Utente eliminato",lista.size(),0);
 	}
+	
+	@Test
+	public void testAdmin() {
+		
+		Admin a1=new Admin("Angelo","Sala","ang.12","angelo12", Role.SECRETARY);
+		Assert.assertEquals("Test admin",a1.isAdmin(), true);
+	}
+	
+	public void testLogin() {
+		
+		User userTest=userController.performLogin("ang.12", "angelo12");
+		
+		Assert.assertEquals("Test login",userTest.getName(), "Angelo");
+	}
+	
 
 }

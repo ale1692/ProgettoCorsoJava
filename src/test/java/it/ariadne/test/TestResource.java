@@ -6,62 +6,93 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import it.ariadne.dao.ResourceDaoImpl;
+import it.ariadne.Controller.ResourceController;
+import it.ariadne.dao.CarDaoImpl;
+import it.ariadne.dao.LaptopDaoImpl;
+import it.ariadne.dao.RoomDaoImpl;
 import it.ariadne.resources.BrandCar;
 import it.ariadne.resources.BrandPc;
 import it.ariadne.resources.Car;
 import it.ariadne.resources.Laptop;
-import it.ariadne.resources.Resource;
 import it.ariadne.resources.Room;
 
 public class TestResource {
 
-	private ResourceDaoImpl resourceImpl;
-	private List<Resource> lista;
-	private Car r1;
-	private Laptop r2;
-	private Room r3;
+	private ResourceController<Car> carController;
+	private ResourceController<Room> roomController;
+	private ResourceController<Laptop> laptopController;
+	private List<Car> listaCar;
+	private List<Room> listaRoom;
+	private List<Laptop> listaLaptop;
+	private Car car1;
+	private Car car2;
+	private Laptop laptop1;
+	private Laptop laptop2;
+	private Room room1;
+	private Room room2;
 
 	@Before
 	public void setup() {
 
-		resourceImpl = new ResourceDaoImpl();
-		lista = resourceImpl.getAllRecords();
-		r1 = new Car("CAR01", true, "ABFDER", 4, BrandCar.FIAT);
-		r2 = new Laptop("PC001", true, 8, 4, BrandPc.LENOVO);
-		r3 = new Room("RA1", true, 20, "Sala A1");
-		resourceImpl.addRecord(r1);
+		carController = new ResourceController<Car>(new CarDaoImpl());
+		roomController = new ResourceController<Room>(new RoomDaoImpl());
+		laptopController = new ResourceController<>(new LaptopDaoImpl());
+
+		car1 = new Car("CAR01", true, "ABFDER", 4, BrandCar.FIAT);
+		car2 = new Car("CAR02", false, "RBDGER", 5, BrandCar.MERCEDES);
+		laptop1 = new Laptop("PC001", true, 8, 4, BrandPc.LENOVO);
+		laptop2 = new Laptop("PC002", false, 16, 6, BrandPc.SAMSUNG);
+		room1 = new Room("RA1", true, 20, "Sala A1");
+		room2 = new Room("RA2", false, 80, "Sala A2");
 	}
 
 	@Test
 	public void testAddResource() {
 
-		resourceImpl.addRecord(r2);
-		resourceImpl.addRecord(r3);
-		lista = resourceImpl.getAllRecords();
-		Assert.assertEquals("Utenti memorizzati nel DB", lista.size(), 3);
+		carController.addRecord(car1);
+		carController.addRecord(car2);
+		listaCar = carController.getAllRecords();
+		roomController.addRecord(room1);
+		roomController.addRecord(room2);
+		listaRoom = roomController.getAllRecords();
+		laptopController.addRecord(laptop1);
+		laptopController.addRecord(laptop2);
+		listaLaptop = laptopController.getAllRecords();
+
+		Assert.assertEquals("Risorse memorizzate nel DB", listaCar.size() + listaLaptop.size() + listaRoom.size(), 6);
 	}
 
-	@Test
-	public void testUpdateResource() {
-		
-		resourceImpl.addRecord(r3);
-		r3.setCapacity(40);
-		lista = resourceImpl.getAllRecords();
-		Assert.assertEquals("Utente modificato", lista.size(), 2);
-		
-		Room roomTest= (Room) resourceImpl.getRecord(r3.getCode());
-		Assert.assertEquals("Utente modificato", roomTest.getCapacity(), 40);
-	}
-
+	 @Test
+	 public void testUpdateResource() {
+	
+	roomController.addRecord(room1);
+	room1.setCapacity(25);
+	roomController.updateRecord(room1);
+	listaRoom = roomController.getAllRecords();
+	Assert.assertEquals("Utente modificato", listaRoom.size(), 1);
+	
+	 Room roomTest= (Room) roomController.getRecord(room1.getCode());
+	 Assert.assertEquals("Risorsa modificata", roomTest.getCapacity(), 25);
+	 }
+	
 	@Test
 	public void testDeleteResource() {
 
-		resourceImpl.deleteRecord(r1);
-		resourceImpl.deleteRecord(r2);
-		lista = resourceImpl.getAllRecords();
+		laptopController.addRecord(laptop1);
+		laptopController.deleteRecord(laptop1);
+		laptopController.deleteRecord(laptop2);
+		listaLaptop = laptopController.getAllRecords();
 
-		Assert.assertEquals("Utente eliminato", lista.size(), 0);
+		Assert.assertEquals("Risorsa eliminata", listaLaptop.size(), 0);
+	}
+
+	@Test
+	public void testSearch() {
+
+		roomController.addRecord(room1);
+		roomController.addRecord(room2);
+		Assert.assertEquals("Filtraggio risorse", roomController.getResourceFiltered(30).size(), 1);
+
 	}
 
 }

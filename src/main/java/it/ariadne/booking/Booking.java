@@ -5,15 +5,15 @@ import java.util.Date;
 import it.ariadne.resources.Resource;
 import it.ariadne.users.User;
 
-public class Booking {
+public class Booking <T extends Resource> {
 
 	private User utente;
-	private Resource risorsa;
+	private T risorsa;
 	private Date startRisorsa;
 	private Date endRisorsa;
 	private int id;
 
-	public Booking(User utente, Resource risorsa, Date startRisorsa, Date endRisorsa, int id) {
+	public Booking(User utente, T risorsa, Date startRisorsa, Date endRisorsa, int id) {
 		super();
 		this.utente = utente;
 		this.risorsa = risorsa;
@@ -34,7 +34,7 @@ public class Booking {
 		return risorsa;
 	}
 
-	public void setRisorsa(Resource risorsa) {
+	public void setRisorsa(T risorsa) {
 		this.risorsa = risorsa;
 	}
 
