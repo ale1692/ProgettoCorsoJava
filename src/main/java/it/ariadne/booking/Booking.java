@@ -23,6 +23,7 @@ public class Booking<T extends Resource> {
 		setActive();
 	}
 
+	
 	public User getUtente() {
 		return utente;
 	}
