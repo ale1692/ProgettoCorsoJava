@@ -5,19 +5,18 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.TreeMap;
 
-import it.ariadne.resources.Laptop;
+import it.ariadne.resources.Resource;
 
-public class LaptopDaoImpl implements Dao<String, Laptop> {
+public class ResourceDaoImpl <T extends Resource> implements Dao<String, T>  {
 
-	// mappa con chiave il codice della risorsa
-	TreeMap<String, Laptop> mappaRisorse;
+	TreeMap<String, T> mappaRisorse;
 
-	public LaptopDaoImpl() {
-			mappaRisorse = new TreeMap<>();
-		}
+	public ResourceDaoImpl() {
+		mappaRisorse = new TreeMap<>();
+	}
 
 	@Override
-	public void addRecord(Laptop r) {
+	public void addRecord(T r) {
 
 		if (!mappaRisorse.containsKey(r.getCode())) {
 
@@ -31,9 +30,9 @@ public class LaptopDaoImpl implements Dao<String, Laptop> {
 	}
 
 	@Override
-	public List<Laptop> getAllRecords() {
+	public List<T> getAllRecords() {
 
-		List<Laptop> listaResource = new ArrayList<>();
+		List<T> listaResource = new ArrayList<>();
 
 		for (Iterator<String> iterator = mappaRisorse.keySet().iterator(); iterator.hasNext();) {
 			String risorsa = (String) iterator.next();
@@ -45,7 +44,7 @@ public class LaptopDaoImpl implements Dao<String, Laptop> {
 	}
 
 	@Override
-	public Laptop getRecord(String code) {
+	public T getRecord(String code) {
 
 		if (mappaRisorse.containsKey(code)) {
 
@@ -57,7 +56,7 @@ public class LaptopDaoImpl implements Dao<String, Laptop> {
 	}
 
 	@Override
-	public void deleteRecord(Laptop r) {
+	public void deleteRecord(T r) {
 
 		if (mappaRisorse.containsKey(r.getCode())) {
 			mappaRisorse.remove(r.getCode());
@@ -69,7 +68,7 @@ public class LaptopDaoImpl implements Dao<String, Laptop> {
 	}
 
 	@Override
-	public void updateRecord(Laptop r) {
+	public void updateRecord(T r) {
 
 		if (!mappaRisorse.containsKey(r.getCode())) {
 

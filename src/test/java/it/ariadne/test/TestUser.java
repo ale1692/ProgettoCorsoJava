@@ -14,7 +14,7 @@ import it.ariadne.users.User;
 
 public class TestUser {
 
-	private UserController<User> userController;
+	private UserController userController;
 	private List<User> lista;
 	private User u1;
 	private User u2;
@@ -23,7 +23,7 @@ public class TestUser {
 	@Before
 	public void setup() {
 
-		userController = new UserController<User>(new UserDaoImpl());
+		userController = new UserController(new UserDaoImpl());
 		u1 = new User("Marco", "Rossi", "prova99", "marco.rossi", Role.DEVELOPER);
 		u2 = new User("Marco", "Rossi", "prova99", "marco.rossi", Role.MARKETING);
 		u3 = new User("Sara", "Fumarola", "asd123", "sarfum", Role.SECRETARY);

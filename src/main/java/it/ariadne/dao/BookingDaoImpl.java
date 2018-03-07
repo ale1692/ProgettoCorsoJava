@@ -33,12 +33,14 @@ public class BookingDaoImpl implements Dao<Integer, Booking<?>> {
 	public List<Booking<?>> getAllRecords() {
 
 		List<Booking<?>> listaBooking = new ArrayList<>();
+		if (mappaPrenotazioni.size() != 0) {
 
-		for (Iterator<Integer> iterator = mappaPrenotazioni.keySet().iterator(); iterator.hasNext();) {
-			int prenotazione = iterator.next();
-			listaBooking.add(mappaPrenotazioni.get(prenotazione));
+			for (Iterator<Integer> iterator = mappaPrenotazioni.keySet().iterator(); iterator.hasNext();) {
+				int prenotazione = iterator.next();
+				listaBooking.add(mappaPrenotazioni.get(prenotazione));
+			}
+
 		}
-
 		return listaBooking;
 	}
 

@@ -3,30 +3,31 @@ package it.ariadne.Controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.joda.time.DateTime;
 import org.joda.time.Interval;
 
 import it.ariadne.booking.Booking;
 import it.ariadne.dao.Dao;
+import it.ariadne.resources.Resource;
+import it.ariadne.users.User;
 
-public class BookingController<T extends Booking<?>> {
+public class BookingController extends Controller<Integer, Booking<? extends Resource>> {
 
-	private Dao<Integer, Booking<?>> bookingDao;
+	public BookingController(Dao<Integer, Booking<?>> bookingDao) {
 
-	public BookingController(Dao<Integer, Booking<?>> prova) {
-
-		this.bookingDao = prova;
+		super(bookingDao);
 	}
 
-	public void addBooking(T t) {
-
-		List<Booking<?>> lista = getAllBookings();
+	@Override
+	public void addRecord(Booking<?> t) {
+		List<Booking<?>> lista = getAllRecords();
 		Interval intervalList;
 		Interval intervalInput;
-		int i=0;
 
 		if (lista.size() == 0) {
-			bookingDao.addRecord(t);
+			super.addRecord(t);
 			System.out.println(t.getRisorsa().getCode());
+			return;
 		}
 
 		else {
@@ -51,18 +52,20 @@ public class BookingController<T extends Booking<?>> {
 
 				else {
 
-					bookingDao.addRecord(t);
+					super.addRecord(t);
 					System.out.println(t.getRisorsa().getCode());
+					return;
 				}
 
 			}
 		}
+
 	}
 
-	public List<Booking<?>> getAllBookings() {
-
-		return setActiveBookings();
-
+	@Override
+	public List<Booking<?>> getAllRecords() {
+		//return setActiveBookings();
+		return super.getAllRecords();
 	}
 
 	public List<Booking<?>> getActiveBooking() {
@@ -81,7 +84,7 @@ public class BookingController<T extends Booking<?>> {
 
 	private List<Booking<?>> setActiveBookings() {
 
-		List<Booking<?>> listAllBookings = bookingDao.getAllRecords();
+		List<Booking<?>> listAllBookings = getAllRecords();
 		boolean activeBooking;
 		boolean statusBooking;
 
@@ -92,32 +95,139 @@ public class BookingController<T extends Booking<?>> {
 			statusBooking = booking.isActive();
 
 			if (activeBooking != statusBooking) {
-				updateBooking(booking);
+				updateRecord(booking);
 				System.out.println("Booking: " + booking.getId() + " Update status booking");
 			}
 
 		}
-		
-		System.out.println("Numero di prenotazionde del db: " +listAllBookings.size());
-		
+
 		return listAllBookings;
 	}
 
-	
-	public Booking<?> getBooking(int id) {
+	public List<Booking<?>> findByTypeActiveResource(Resource r) {
 
-		return bookingDao.getRecord(id);
+		List<Booking<?>> lista = getActiveBooking();
+		List<Booking<?>> listaActive = new ArrayList<>();
+
+		for (Booking<?> booking : lista) {
+
+			if (booking.getRisorsa().getClass() == r.getClass()) {
+				listaActive.add(booking);
+			}
+		}
+		return listaActive;
+
 	}
 
-	public void deleteBooking(T t) {
+	public List<Booking<?>> findByActiveResource(Resource r) {
 
-		bookingDao.deleteRecord(t);
+		List<Booking<?>> lista = getActiveBooking();
+		List<Booking<?>> listaActive = new ArrayList<>();
+
+		for (Booking<?> booking : lista) {
+
+			if (booking.getRisorsa().equals(r)) {
+				listaActive.add(booking);
+			}
+		}
+		return listaActive;
 
 	}
 
-	public void updateBooking(Booking<?> booking) {
+	public List<Booking<?>> findByActiveUser(User u) {
 
-		bookingDao.updateRecord(booking);
+		List<Booking<?>> lista = getActiveBooking();
+		List<Booking<?>> listaActive = new ArrayList<>();
+
+		for (Booking<?> booking : lista) {
+
+			if (booking.getUtente().equals(u)) {
+				listaActive.add(booking);
+			}
+		}
+		return listaActive;
+
+	}
+
+	public DateTime findFirstResourceAvailability(Resource r, DateTime beginSeachDate, DateTime endSeachDate, int hours,
+			int minutes) {
+
+		List<Booking<?>> resourceActiveBookings = findByActiveResource(r);
+
+		DateTime partialEndDate;
+		Interval partialinterval;
+		Interval storedInterval;
+
+		boolean busyinterval = false;
+
+		while (beginSeachDate.isBefore(endSeachDate)) {
+
+			partialEndDate = beginSeachDate.plusHours(hours).plusMinutes(minutes);
+
+			partialinterval = new Interval(beginSeachDate, partialEndDate);
+
+			for (Booking<?> booking : resourceActiveBookings) {
+
+				storedInterval = new Interval(booking.getStartRisorsa(), booking.getEndRisorsa());
+
+				if ((partialinterval.overlaps(storedInterval))) {
+					busyinterval = true;
+					break;
+				} else
+					busyinterval = false;
+
+			}
+
+			if (busyinterval == false)
+				return beginSeachDate;
+
+			beginSeachDate = beginSeachDate.plusMinutes(30);
+		}
+
+		return null;
+	}
+
+	public Resource findResourceAvailabilityByContraint(Resource resourceType, int hours, int minutes,
+			int minimumConstraint) {
+
+		DateTime beginSeachDate = new DateTime();
+		Interval storedInterval;
+
+		List<Booking<?>> resourceActiveBookings = findByActiveResource(resourceType);
+		Resource r;
+		Booking<?> candidateReservation = null;
+
+		while (candidateReservation == null) {
+
+			DateTime endSearchDate = beginSeachDate.plusHours(hours).plusMinutes(minutes);
+			Interval searchInterval = new Interval(beginSeachDate, endSearchDate);
+
+			for (Booking<?> booking : resourceActiveBookings) {
+
+				r = booking.getRisorsa();
+
+				if (r.getClass().getSimpleName().equals(resourceType.getClass().getSimpleName())) {
+
+					if (r.searchByConstraint(minimumConstraint)) {
+
+						storedInterval = new Interval(booking.getStartRisorsa(), booking.getEndRisorsa());
+
+						if ((!searchInterval.overlaps(storedInterval))) {
+
+							candidateReservation = booking;
+							break;
+
+						}
+
+					}
+				}
+			}
+
+			beginSeachDate = beginSeachDate.plusHours(30);
+
+		}
+
+		return candidateReservation.getRisorsa();
 
 	}
 

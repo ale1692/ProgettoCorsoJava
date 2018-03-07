@@ -1,50 +1,18 @@
 package it.ariadne.Controller;
 
-import java.util.List;
-
 import it.ariadne.dao.Dao;
 import it.ariadne.users.User;
 
-public class UserController<T extends User> {
+public class UserController extends Controller<String, User>{
 
-	private Dao<String, T> userDao;
-
-	public UserController(Dao<String, T> userDao) {
-		this.userDao = userDao;
+	
+	public UserController(Dao<String, User> userDao) {
+		super(userDao);
 	}
 
-	public void addRecord(T t) {
+	public User performLogin(String username, String password) {
 
-		userDao.addRecord(t);
-
-	}
-
-	public List<T> getAllRecords() {
-
-		return userDao.getAllRecords();
-
-	}
-
-	public T getRecord(String code) {
-
-		return userDao.getRecord(code);
-	}
-
-	public void deleteRecord(T t) {
-
-		userDao.deleteRecord(t);
-
-	}
-
-	public void updateRecord(T t) {
-
-		userDao.updateRecord(t);
-
-	}
-
-	public T performLogin(String username, String password) {
-
-		T u = userDao.getRecord(username);
+		User u = getRecord(username);
 
 		if (u != null) {
 			if (u.getPassword().equals(password)) {

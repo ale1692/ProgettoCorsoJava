@@ -7,9 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import it.ariadne.Controller.ResourceController;
-import it.ariadne.dao.CarDaoImpl;
-import it.ariadne.dao.LaptopDaoImpl;
-import it.ariadne.dao.RoomDaoImpl;
+import it.ariadne.dao.ResourceDaoImpl;
 import it.ariadne.resources.BrandCar;
 import it.ariadne.resources.BrandPc;
 import it.ariadne.resources.Car;
@@ -34,9 +32,9 @@ public class TestResource {
 	@Before
 	public void setup() {
 
-		carController = new ResourceController<Car>(new CarDaoImpl());
-		roomController = new ResourceController<Room>(new RoomDaoImpl());
-		laptopController = new ResourceController<>(new LaptopDaoImpl());
+		carController = new ResourceController<Car>(new ResourceDaoImpl<Car>());
+		roomController = new ResourceController<Room>(new ResourceDaoImpl<Room>());
+		laptopController = new ResourceController<Laptop>(new ResourceDaoImpl<Laptop>());
 
 		car1 = new Car("CAR01", true, "ABFDER", 4, BrandCar.FIAT);
 		car2 = new Car("CAR02", false, "RBDGER", 5, BrandCar.MERCEDES);

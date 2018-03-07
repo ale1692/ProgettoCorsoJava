@@ -14,6 +14,9 @@ public class Booking<T extends Resource> {
 	private int id;
 	private boolean active;
 
+	public Booking() {
+	}
+
 	public Booking(int id, User utente, T risorsa, DateTime startRisorsa, DateTime endRisorsa) {
 		this.utente = utente;
 		this.risorsa = risorsa;
@@ -23,7 +26,6 @@ public class Booking<T extends Resource> {
 		setActive();
 	}
 
-	
 	public User getUtente() {
 		return utente;
 	}
@@ -70,7 +72,7 @@ public class Booking<T extends Resource> {
 
 	public void setActive() {
 
-		if (endRisorsa.isAfterNow()) {
+		if (endRisorsa.isBeforeNow()) {
 			this.active = false;
 			return;
 		}
