@@ -7,17 +7,17 @@ import java.util.TreeMap;
 
 import it.ariadne.booking.Booking;
 
-public class BookingDaoImpl implements Dao<Integer, Booking> {
+public class BookingDaoImpl implements Dao<Integer, Booking<?>> {
 
 	// mappa con chiave id
-	TreeMap<Integer, Booking> mappaPrenotazioni;
+	TreeMap<Integer, Booking<?>> mappaPrenotazioni;
 
 	public BookingDaoImpl() {
 		mappaPrenotazioni = new TreeMap<>();
 	}
 
 	@Override
-	public void addRecord(Booking b) {
+	public void addRecord(Booking<?> b) {
 		if (!mappaPrenotazioni.containsKey(b.getId())) {
 
 			mappaPrenotazioni.put(b.getId(), b);
@@ -30,9 +30,9 @@ public class BookingDaoImpl implements Dao<Integer, Booking> {
 	}
 
 	@Override
-	public List<Booking> getAllRecords() {
+	public List<Booking<?>> getAllRecords() {
 
-		List<Booking> listaBooking = new ArrayList<>();
+		List<Booking<?>> listaBooking = new ArrayList<>();
 
 		for (Iterator<Integer> iterator = mappaPrenotazioni.keySet().iterator(); iterator.hasNext();) {
 			int prenotazione = iterator.next();
@@ -43,7 +43,7 @@ public class BookingDaoImpl implements Dao<Integer, Booking> {
 	}
 
 	@Override
-	public Booking getRecord(Integer id) {
+	public Booking<?> getRecord(Integer id) {
 
 		if (mappaPrenotazioni.containsKey(id)) {
 
@@ -56,7 +56,7 @@ public class BookingDaoImpl implements Dao<Integer, Booking> {
 	}
 
 	@Override
-	public void deleteRecord(Booking b) {
+	public void deleteRecord(Booking<?> b) {
 
 		if (mappaPrenotazioni.containsKey(b.getId())) {
 			mappaPrenotazioni.remove(b.getId());
@@ -68,7 +68,7 @@ public class BookingDaoImpl implements Dao<Integer, Booking> {
 	}
 
 	@Override
-	public void updateRecord(Booking b) {
+	public void updateRecord(Booking<?> b) {
 		if (!mappaPrenotazioni.containsKey(b.getId())) {
 
 			System.out.println("Booking does not exist in the database");

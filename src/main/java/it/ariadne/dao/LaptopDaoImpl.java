@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.TreeMap;
 
 import it.ariadne.resources.Laptop;
-import it.ariadne.resources.Room;
 
 public class LaptopDaoImpl implements Dao<String, Laptop> {
 

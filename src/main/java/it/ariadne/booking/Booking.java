@@ -1,25 +1,26 @@
 package it.ariadne.booking;
 
-import java.util.Date;
+import org.joda.time.DateTime;
 
 import it.ariadne.resources.Resource;
 import it.ariadne.users.User;
 
-public class Booking <T extends Resource> {
+public class Booking<T extends Resource> {
 
 	private User utente;
 	private T risorsa;
-	private Date startRisorsa;
-	private Date endRisorsa;
+	private DateTime startRisorsa;
+	private DateTime endRisorsa;
 	private int id;
+	private boolean active;
 
-	public Booking(User utente, T risorsa, Date startRisorsa, Date endRisorsa, int id) {
-		super();
+	public Booking(int id, User utente, T risorsa, DateTime startRisorsa, DateTime endRisorsa) {
 		this.utente = utente;
 		this.risorsa = risorsa;
 		this.startRisorsa = startRisorsa;
 		this.endRisorsa = endRisorsa;
 		this.id = id;
+		setActive();
 	}
 
 	public User getUtente() {
@@ -38,19 +39,19 @@ public class Booking <T extends Resource> {
 		this.risorsa = risorsa;
 	}
 
-	public Date getStartRisorsa() {
+	public DateTime getStartRisorsa() {
 		return startRisorsa;
 	}
 
-	public void setStartRisorsa(Date startRisorsa) {
+	public void setStartRisorsa(DateTime startRisorsa) {
 		this.startRisorsa = startRisorsa;
 	}
 
-	public Date getEndRisorsa() {
+	public DateTime getEndRisorsa() {
 		return endRisorsa;
 	}
 
-	public void setEndRisorsa(Date endRisorsa) {
+	public void setEndRisorsa(DateTime endRisorsa) {
 		this.endRisorsa = endRisorsa;
 	}
 
@@ -60,6 +61,20 @@ public class Booking <T extends Resource> {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive() {
+
+		if (endRisorsa.isAfterNow()) {
+			this.active = false;
+			return;
+		}
+
+		this.active = true;
 	}
 
 }

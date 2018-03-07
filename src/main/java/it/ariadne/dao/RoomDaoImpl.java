@@ -5,7 +5,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.TreeMap;
 
-import it.ariadne.resources.Car;
 import it.ariadne.resources.Room;
 
 public class RoomDaoImpl implements Dao<String, Room> {
