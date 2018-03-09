@@ -2,12 +2,12 @@ package it.ariadne.booking;
 
 import org.joda.time.DateTime;
 
-import it.ariadne.resources.Resource;
-import it.ariadne.users.User;
+import it.ariadne.resource.Resource;
+import it.ariadne.user.User;
 
-public class Booking<T extends Resource> {
+public class Booking<T extends Resource, U extends User> {
 
-	private User utente;
+	private U utente;
 	private T risorsa;
 	private DateTime startRisorsa;
 	private DateTime endRisorsa;
@@ -17,7 +17,7 @@ public class Booking<T extends Resource> {
 	public Booking() {
 	}
 
-	public Booking(int id, User utente, T risorsa, DateTime startRisorsa, DateTime endRisorsa) {
+	public Booking(int id, U utente, T risorsa, DateTime startRisorsa, DateTime endRisorsa) {
 		this.utente = utente;
 		this.risorsa = risorsa;
 		this.startRisorsa = startRisorsa;
@@ -26,15 +26,15 @@ public class Booking<T extends Resource> {
 		setActive();
 	}
 
-	public User getUtente() {
+	public U getUtente() {
 		return utente;
 	}
 
-	public void setUtente(User utente) {
+	public void setUtente(U utente) {
 		this.utente = utente;
 	}
 
-	public Resource getRisorsa() {
+	public T getRisorsa() {
 		return risorsa;
 	}
 

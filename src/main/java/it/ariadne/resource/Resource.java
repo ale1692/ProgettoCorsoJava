@@ -1,4 +1,4 @@
-package it.ariadne.resources;
+package it.ariadne.resource;
 
 public abstract class Resource {
 

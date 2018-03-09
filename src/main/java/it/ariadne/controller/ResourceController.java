@@ -1,10 +1,10 @@
-package it.ariadne.Controller;
+package it.ariadne.controller;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import it.ariadne.dao.Dao;
-import it.ariadne.resources.Resource;
+import it.ariadne.resource.Resource;
 
 public class ResourceController <T extends Resource> extends Controller<String,T> {
 

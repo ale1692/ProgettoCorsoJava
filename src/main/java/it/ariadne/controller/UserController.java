@@ -1,18 +1,18 @@
-package it.ariadne.Controller;
+package it.ariadne.controller;
 
 import it.ariadne.dao.Dao;
-import it.ariadne.users.User;
+import it.ariadne.user.User;
 
-public class UserController extends Controller<String, User>{
+public class UserController<T extends User> extends Controller<String, T>{
 
 	
-	public UserController(Dao<String, User> userDao) {
+	public UserController(Dao<String, T> userDao) {
 		super(userDao);
 	}
 
-	public User performLogin(String username, String password) {
+	public T performLogin(String username, String password) {
 
-		User u = getRecord(username);
+		T u = getRecord(username);
 
 		if (u != null) {
 			if (u.getPassword().equals(password)) {

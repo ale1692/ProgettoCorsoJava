@@ -5,19 +5,19 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.TreeMap;
 
-import it.ariadne.users.User;
+import it.ariadne.user.User;
 
-public class UserDaoImpl implements Dao<String, User> {
+public class UserDaoImpl <T extends User >implements Dao<String, T> {
 
 	// mappa con chiave il codice fiscale
-	TreeMap<String, User> mappaUtenti;
+	TreeMap<String, T> mappaUtenti;
 
 	public UserDaoImpl() {
 		mappaUtenti = new TreeMap<>();
 	}
 
 	@Override
-	public void addRecord(User utente) {
+	public void addRecord(T utente) {
 		if (!mappaUtenti.containsKey(utente.getUserName())) {
 
 			mappaUtenti.put(utente.getUserName(), utente);
@@ -30,9 +30,9 @@ public class UserDaoImpl implements Dao<String, User> {
 	}
 
 	@Override
-	public List<User> getAllRecords() {
+	public List<T> getAllRecords() {
 
-		List<User> listaUser = new ArrayList<>();
+		List<T> listaUser = new ArrayList<>();
 
 		for (Iterator<String> iterator = mappaUtenti.keySet().iterator(); iterator.hasNext();) {
 			String persona = (String) iterator.next();
@@ -43,7 +43,7 @@ public class UserDaoImpl implements Dao<String, User> {
 	}
 
 	@Override
-	public User getRecord(String userName) {
+	public T getRecord(String userName) {
 
 		if (mappaUtenti.containsKey(userName)) {
 			return mappaUtenti.get(userName);
@@ -54,7 +54,7 @@ public class UserDaoImpl implements Dao<String, User> {
 	}
 
 	@Override
-	public void deleteRecord(User utente) {
+	public void deleteRecord(T utente) {
 
 		if (mappaUtenti.containsKey(utente.getUserName())) {
 
@@ -68,7 +68,7 @@ public class UserDaoImpl implements Dao<String, User> {
 	}
 
 	@Override
-	public void updateRecord(User utente) {
+	public void updateRecord(T utente) {
 		if (!mappaUtenti.containsKey(utente.getUserName())) {
 
 			System.out.println("Utente does not exist in database");

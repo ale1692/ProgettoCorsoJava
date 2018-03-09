@@ -1,4 +1,4 @@
-package it.ariadne.Controller;
+package it.ariadne.controller;
 
 import java.util.List;
 

@@ -6,13 +6,13 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import it.ariadne.Controller.ResourceController;
+import it.ariadne.controller.ResourceController;
 import it.ariadne.dao.ResourceDaoImpl;
-import it.ariadne.resources.BrandCar;
-import it.ariadne.resources.BrandPc;
-import it.ariadne.resources.Car;
-import it.ariadne.resources.Laptop;
-import it.ariadne.resources.Room;
+import it.ariadne.resource.BrandCar;
+import it.ariadne.resource.BrandPc;
+import it.ariadne.resource.Car;
+import it.ariadne.resource.Laptop;
+import it.ariadne.resource.Room;
 
 public class TestResource {
 

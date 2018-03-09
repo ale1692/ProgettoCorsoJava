@@ -1,4 +1,4 @@
-package it.ariadne.Controller;
+package it.ariadne.controller;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,19 +8,19 @@ import org.joda.time.Interval;
 
 import it.ariadne.booking.Booking;
 import it.ariadne.dao.Dao;
-import it.ariadne.resources.Resource;
-import it.ariadne.users.User;
+import it.ariadne.resource.Resource;
+import it.ariadne.user.User;
 
-public class BookingController extends Controller<Integer, Booking<? extends Resource>> {
+public class BookingController<T extends Resource, U extends User> extends Controller<Integer, Booking<T, U>> {
 
-	public BookingController(Dao<Integer, Booking<?>> bookingDao) {
+	public BookingController(Dao<Integer, Booking<T, U>> bookingDao) {
 
 		super(bookingDao);
 	}
 
 	@Override
-	public void addRecord(Booking<?> t) {
-		List<Booking<?>> lista = getAllRecords();
+	public void addRecord(Booking<T, U> t) {
+		List<Booking<T, U>> lista = getAllRecords();
 		Interval intervalList;
 		Interval intervalInput;
 
@@ -31,7 +31,7 @@ public class BookingController extends Controller<Integer, Booking<? extends Res
 		}
 
 		else {
-			for (Booking<?> booking : lista) {
+			for (Booking<T, U> booking : lista) {
 
 				intervalList = new Interval(booking.getStartRisorsa(), booking.getEndRisorsa());
 				intervalInput = new Interval(t.getStartRisorsa(), t.getEndRisorsa());
@@ -63,17 +63,17 @@ public class BookingController extends Controller<Integer, Booking<? extends Res
 	}
 
 	@Override
-	public List<Booking<?>> getAllRecords() {
-		//return setActiveBookings();
+	public List<Booking<T, U>> getAllRecords() {
+		// return setActiveBookings();
 		return super.getAllRecords();
 	}
 
-	public List<Booking<?>> getActiveBooking() {
+	public List<Booking<T, U>> getActiveBooking() {
 
-		List<Booking<?>> listAllBookings = setActiveBookings();
-		List<Booking<?>> listActiveBookings = new ArrayList<>();
+		List<Booking<T, U>> listAllBookings = setActiveBookings();
+		List<Booking<T, U>> listActiveBookings = new ArrayList<>();
 
-		for (Booking<?> booking : listAllBookings) {
+		for (Booking<T, U> booking : listAllBookings) {
 			if (booking.isActive()) {
 				listActiveBookings.add(booking);
 			}
@@ -82,13 +82,13 @@ public class BookingController extends Controller<Integer, Booking<? extends Res
 		return listActiveBookings;
 	}
 
-	private List<Booking<?>> setActiveBookings() {
+	private List<Booking<T, U>> setActiveBookings() {
 
-		List<Booking<?>> listAllBookings = getAllRecords();
+		List<Booking<T, U>> listAllBookings = getAllRecords();
 		boolean activeBooking;
 		boolean statusBooking;
 
-		for (Booking<?> booking : listAllBookings) {
+		for (Booking<T, U> booking : listAllBookings) {
 
 			activeBooking = booking.isActive();
 			booking.setActive();
@@ -104,12 +104,12 @@ public class BookingController extends Controller<Integer, Booking<? extends Res
 		return listAllBookings;
 	}
 
-	public List<Booking<?>> findByTypeActiveResource(Resource r) {
+	public List<Booking<T, U>> findByTypeActiveResource(T r) {
 
-		List<Booking<?>> lista = getActiveBooking();
-		List<Booking<?>> listaActive = new ArrayList<>();
+		List<Booking<T, U>> lista = getActiveBooking();
+		List<Booking<T, U>> listaActive = new ArrayList<>();
 
-		for (Booking<?> booking : lista) {
+		for (Booking<T, U> booking : lista) {
 
 			if (booking.getRisorsa().getClass() == r.getClass()) {
 				listaActive.add(booking);
@@ -119,12 +119,12 @@ public class BookingController extends Controller<Integer, Booking<? extends Res
 
 	}
 
-	public List<Booking<?>> findByActiveResource(Resource r) {
+	public List<Booking<T,U>> findByActiveResource(T r) {
 
-		List<Booking<?>> lista = getActiveBooking();
-		List<Booking<?>> listaActive = new ArrayList<>();
+		List<Booking<T,U>> lista = getActiveBooking();
+		List<Booking<T,U>> listaActive = new ArrayList<>();
 
-		for (Booking<?> booking : lista) {
+		for (Booking<T,U> booking : lista) {
 
 			if (booking.getRisorsa().equals(r)) {
 				listaActive.add(booking);
@@ -134,12 +134,12 @@ public class BookingController extends Controller<Integer, Booking<? extends Res
 
 	}
 
-	public List<Booking<?>> findByActiveUser(User u) {
+	public List<Booking<T,U>> findByActiveUser(U u) {
 
-		List<Booking<?>> lista = getActiveBooking();
-		List<Booking<?>> listaActive = new ArrayList<>();
+		List<Booking<T,U>> lista = getActiveBooking();
+		List<Booking<T,U>> listaActive = new ArrayList<>();
 
-		for (Booking<?> booking : lista) {
+		for (Booking<T,U> booking : lista) {
 
 			if (booking.getUtente().equals(u)) {
 				listaActive.add(booking);
@@ -149,11 +149,10 @@ public class BookingController extends Controller<Integer, Booking<? extends Res
 
 	}
 
-	public DateTime findFirstResourceAvailability(Resource r, DateTime beginSeachDate, DateTime endSeachDate, int hours,
+	public DateTime findFirstResourceAvailability(T r, DateTime beginSeachDate, DateTime endSeachDate, int hours,
 			int minutes) {
 
-		List<Booking<?>> resourceActiveBookings = findByActiveResource(r);
-
+		List<Booking<T,U>> resourceActiveBookings = findByActiveResource(r);
 		DateTime partialEndDate;
 		Interval partialinterval;
 		Interval storedInterval;
@@ -166,7 +165,7 @@ public class BookingController extends Controller<Integer, Booking<? extends Res
 
 			partialinterval = new Interval(beginSeachDate, partialEndDate);
 
-			for (Booking<?> booking : resourceActiveBookings) {
+			for (Booking<T,U> booking : resourceActiveBookings) {
 
 				storedInterval = new Interval(booking.getStartRisorsa(), booking.getEndRisorsa());
 
@@ -187,24 +186,23 @@ public class BookingController extends Controller<Integer, Booking<? extends Res
 		return null;
 	}
 
-	public Resource findResourceAvailabilityByContraint(Resource resourceType, int hours, int minutes,
-			int minimumConstraint) {
+	public Resource findResourceAvailabilityByContraint(T resourceType, int hours, int minutes, int minimumConstraint) {
 
 		DateTime beginSeachDate = new DateTime();
 		Interval storedInterval;
 
-		List<Booking<?>> resourceActiveBookings = findByActiveResource(resourceType);
-		Resource r;
-		Booking<?> candidateReservation = null;
+		List<Booking<T,U>> resourceActiveBookings = findByActiveResource(resourceType);
+		T r;
+		Booking<T,U> candidateReservation = null;
 
 		while (candidateReservation == null) {
 
 			DateTime endSearchDate = beginSeachDate.plusHours(hours).plusMinutes(minutes);
 			Interval searchInterval = new Interval(beginSeachDate, endSearchDate);
 
-			for (Booking<?> booking : resourceActiveBookings) {
+			for (Booking<T,U> booking : resourceActiveBookings) {
 
-				r = booking.getRisorsa();
+				r = ((T) booking.getRisorsa());
 
 				if (r.getClass().getSimpleName().equals(resourceType.getClass().getSimpleName())) {
 

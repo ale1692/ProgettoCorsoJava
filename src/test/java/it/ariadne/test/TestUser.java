@@ -6,15 +6,15 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import it.ariadne.Controller.UserController;
+import it.ariadne.controller.UserController;
 import it.ariadne.dao.UserDaoImpl;
-import it.ariadne.users.Admin;
-import it.ariadne.users.Role;
-import it.ariadne.users.User;
+import it.ariadne.user.Admin;
+import it.ariadne.user.Role;
+import it.ariadne.user.User;
 
 public class TestUser {
 
-	private UserController userController;
+	private UserController<User> userController;
 	private List<User> lista;
 	private User u1;
 	private User u2;
@@ -23,7 +23,7 @@ public class TestUser {
 	@Before
 	public void setup() {
 
-		userController = new UserController(new UserDaoImpl());
+		userController = new UserController<User>(new UserDaoImpl<User>());
 		u1 = new User("Marco", "Rossi", "prova99", "marco.rossi", Role.DEVELOPER);
 		u2 = new User("Marco", "Rossi", "prova99", "marco.rossi", Role.MARKETING);
 		u3 = new User("Sara", "Fumarola", "asd123", "sarfum", Role.SECRETARY);

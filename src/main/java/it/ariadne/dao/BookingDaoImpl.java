@@ -6,18 +6,20 @@ import java.util.List;
 import java.util.TreeMap;
 
 import it.ariadne.booking.Booking;
+import it.ariadne.resource.Resource;
+import it.ariadne.user.User;
 
-public class BookingDaoImpl implements Dao<Integer, Booking<?>> {
+public class BookingDaoImpl <T extends Resource, U extends User> implements Dao<Integer, Booking<T, U>> {
 
 	// mappa con chiave id
-	TreeMap<Integer, Booking<?>> mappaPrenotazioni;
+	TreeMap<Integer, Booking<T,U>> mappaPrenotazioni;
 
 	public BookingDaoImpl() {
 		mappaPrenotazioni = new TreeMap<>();
 	}
 
 	@Override
-	public void addRecord(Booking<?> b) {
+	public void addRecord(Booking<T, U> b) {
 		if (!mappaPrenotazioni.containsKey(b.getId())) {
 
 			mappaPrenotazioni.put(b.getId(), b);
@@ -30,9 +32,9 @@ public class BookingDaoImpl implements Dao<Integer, Booking<?>> {
 	}
 
 	@Override
-	public List<Booking<?>> getAllRecords() {
+	public List<Booking<T, U>> getAllRecords() {
 
-		List<Booking<?>> listaBooking = new ArrayList<>();
+		List<Booking<T, U>> listaBooking = new ArrayList<>();
 		if (mappaPrenotazioni.size() != 0) {
 
 			for (Iterator<Integer> iterator = mappaPrenotazioni.keySet().iterator(); iterator.hasNext();) {
@@ -45,11 +47,11 @@ public class BookingDaoImpl implements Dao<Integer, Booking<?>> {
 	}
 
 	@Override
-	public Booking<?> getRecord(Integer id) {
+	public Booking<T, U> getRecord(Integer id) {
 
 		if (mappaPrenotazioni.containsKey(id)) {
 
-			return mappaPrenotazioni.get(id);
+			return  mappaPrenotazioni.get(id);
 		} else {
 			System.out.println("Booking: " + id + ", not present in the database");
 			return null;
@@ -58,7 +60,7 @@ public class BookingDaoImpl implements Dao<Integer, Booking<?>> {
 	}
 
 	@Override
-	public void deleteRecord(Booking<?> b) {
+	public void deleteRecord(Booking<T, U> b) {
 
 		if (mappaPrenotazioni.containsKey(b.getId())) {
 			mappaPrenotazioni.remove(b.getId());
@@ -70,7 +72,7 @@ public class BookingDaoImpl implements Dao<Integer, Booking<?>> {
 	}
 
 	@Override
-	public void updateRecord(Booking<?> b) {
+	public void updateRecord(Booking<T, U> b) {
 		if (!mappaPrenotazioni.containsKey(b.getId())) {
 
 			System.out.println("Booking does not exist in the database");
