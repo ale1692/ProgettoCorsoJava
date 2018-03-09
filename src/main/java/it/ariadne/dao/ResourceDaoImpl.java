@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.TreeMap;
 
-import it.ariadne.resource.Resource;
+import it.ariadne.model.resource.Resource;
 
 public class ResourceDaoImpl <T extends Resource> implements Dao<String, T>  {
 

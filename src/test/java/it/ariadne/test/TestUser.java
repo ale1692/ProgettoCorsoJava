@@ -8,9 +8,9 @@ import org.junit.Test;
 
 import it.ariadne.controller.UserController;
 import it.ariadne.dao.UserDaoImpl;
-import it.ariadne.user.Admin;
-import it.ariadne.user.Role;
-import it.ariadne.user.User;
+import it.ariadne.model.user.Admin;
+import it.ariadne.model.user.Role;
+import it.ariadne.model.user.User;
 
 public class TestUser {
 

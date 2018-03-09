@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.TreeMap;
 
-import it.ariadne.user.User;
+import it.ariadne.model.user.User;
 
 public class UserDaoImpl <T extends User >implements Dao<String, T> {
 

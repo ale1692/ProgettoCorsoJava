@@ -5,21 +5,21 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import it.ariadne.booking.Booking;
 import it.ariadne.controller.BookingController;
 import it.ariadne.controller.ResourceController;
 import it.ariadne.controller.UserController;
 import it.ariadne.dao.BookingDaoImpl;
 import it.ariadne.dao.ResourceDaoImpl;
 import it.ariadne.dao.UserDaoImpl;
-import it.ariadne.resource.BrandCar;
-import it.ariadne.resource.BrandPc;
-import it.ariadne.resource.Car;
-import it.ariadne.resource.Laptop;
-import it.ariadne.resource.Resource;
-import it.ariadne.resource.Room;
-import it.ariadne.user.Role;
-import it.ariadne.user.User;
+import it.ariadne.model.booking.Booking;
+import it.ariadne.model.resource.BrandCar;
+import it.ariadne.model.resource.BrandPc;
+import it.ariadne.model.resource.Car;
+import it.ariadne.model.resource.Laptop;
+import it.ariadne.model.resource.Resource;
+import it.ariadne.model.resource.Room;
+import it.ariadne.model.user.Role;
+import it.ariadne.model.user.User;
 
 public class TestBooking {
 

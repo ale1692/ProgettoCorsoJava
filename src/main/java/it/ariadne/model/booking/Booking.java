@@ -1,9 +1,9 @@
-package it.ariadne.booking;
+package it.ariadne.model.booking;
 
 import org.joda.time.DateTime;
 
-import it.ariadne.resource.Resource;
-import it.ariadne.user.User;
+import it.ariadne.model.resource.Resource;
+import it.ariadne.model.user.User;
 
 public class Booking<T extends Resource, U extends User> {
 

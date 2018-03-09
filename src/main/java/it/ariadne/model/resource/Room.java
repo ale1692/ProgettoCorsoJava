@@ -1,4 +1,4 @@
-package it.ariadne.resource;
+package it.ariadne.model.resource;
 
 public class Room extends Resource {
 

@@ -6,10 +6,10 @@ import java.util.List;
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
 
-import it.ariadne.booking.Booking;
 import it.ariadne.dao.Dao;
-import it.ariadne.resource.Resource;
-import it.ariadne.user.User;
+import it.ariadne.model.booking.Booking;
+import it.ariadne.model.resource.Resource;
+import it.ariadne.model.user.User;
 
 public class BookingController<T extends Resource, U extends User> extends Controller<Integer, Booking<T, U>> {
 
@@ -20,7 +20,7 @@ public class BookingController<T extends Resource, U extends User> extends Contr
 
 	@Override
 	public void addRecord(Booking<T, U> t) {
-		List<Booking<T, U>> lista = getAllRecords();
+		List<Booking<T, U>> lista = super.getAllRecords();
 		Interval intervalList;
 		Interval intervalInput;
 
@@ -62,12 +62,7 @@ public class BookingController<T extends Resource, U extends User> extends Contr
 
 	}
 
-	@Override
-	public List<Booking<T, U>> getAllRecords() {
-		// return setActiveBookings();
-		return super.getAllRecords();
-	}
-
+	
 	public List<Booking<T, U>> getActiveBooking() {
 
 		List<Booking<T, U>> listAllBookings = setActiveBookings();
@@ -84,7 +79,7 @@ public class BookingController<T extends Resource, U extends User> extends Contr
 
 	private List<Booking<T, U>> setActiveBookings() {
 
-		List<Booking<T, U>> listAllBookings = getAllRecords();
+		List<Booking<T, U>> listAllBookings = super.getAllRecords();
 		boolean activeBooking;
 		boolean statusBooking;
 

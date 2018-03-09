@@ -1,4 +1,4 @@
-package it.ariadne.resource;
+package it.ariadne.model.resource;
 
 public enum BrandCar {
 	FIAT, MERCEDES, RENAULT

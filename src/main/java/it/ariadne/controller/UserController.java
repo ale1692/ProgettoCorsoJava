@@ -1,7 +1,7 @@
 package it.ariadne.controller;
 
 import it.ariadne.dao.Dao;
-import it.ariadne.user.User;
+import it.ariadne.model.user.User;
 
 public class UserController<T extends User> extends Controller<String, T>{
 

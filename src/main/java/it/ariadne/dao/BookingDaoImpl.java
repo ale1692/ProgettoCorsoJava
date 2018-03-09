@@ -5,9 +5,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.TreeMap;
 
-import it.ariadne.booking.Booking;
-import it.ariadne.resource.Resource;
-import it.ariadne.user.User;
+import it.ariadne.model.booking.Booking;
+import it.ariadne.model.resource.Resource;
+import it.ariadne.model.user.User;
 
 public class BookingDaoImpl <T extends Resource, U extends User> implements Dao<Integer, Booking<T, U>> {
 

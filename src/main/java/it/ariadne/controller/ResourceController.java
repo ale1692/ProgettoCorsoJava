@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.ariadne.dao.Dao;
-import it.ariadne.resource.Resource;
+import it.ariadne.model.resource.Resource;
 
 public class ResourceController <T extends Resource> extends Controller<String,T> {
 

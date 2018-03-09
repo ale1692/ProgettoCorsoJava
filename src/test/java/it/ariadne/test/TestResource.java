@@ -8,11 +8,11 @@ import org.junit.Test;
 
 import it.ariadne.controller.ResourceController;
 import it.ariadne.dao.ResourceDaoImpl;
-import it.ariadne.resource.BrandCar;
-import it.ariadne.resource.BrandPc;
-import it.ariadne.resource.Car;
-import it.ariadne.resource.Laptop;
-import it.ariadne.resource.Room;
+import it.ariadne.model.resource.BrandCar;
+import it.ariadne.model.resource.BrandPc;
+import it.ariadne.model.resource.Car;
+import it.ariadne.model.resource.Laptop;
+import it.ariadne.model.resource.Room;
 
 public class TestResource {
 
