@@ -12,7 +12,7 @@ import it.ariadne.model.user.User;
 public class BookingDaoImpl <T extends Resource, U extends User> implements Dao<Integer, Booking<T, U>> {
 
 	// mappa con chiave id
-	TreeMap<Integer, Booking<T,U>> mappaPrenotazioni;
+	private TreeMap<Integer, Booking<T,U>> mappaPrenotazioni;
 
 	public BookingDaoImpl() {
 		mappaPrenotazioni = new TreeMap<>();

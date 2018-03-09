@@ -10,7 +10,7 @@ import it.ariadne.model.user.User;
 public class UserDaoImpl <T extends User >implements Dao<String, T> {
 
 	// mappa con chiave il codice fiscale
-	TreeMap<String, T> mappaUtenti;
+	private TreeMap<String, T> mappaUtenti;
 
 	public UserDaoImpl() {
 		mappaUtenti = new TreeMap<>();

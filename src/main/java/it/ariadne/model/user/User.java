@@ -67,4 +67,16 @@ public class User {
 		this.role = role;
 	}
 
+	@Override
+	public String toString() {
+
+		String typeUser = "User";
+		if (isAdmin) {
+			typeUser = "Admin";
+		}
+
+		return "User: " + this.getUserName() + " Firstname: " + this.getUserName() + " Surname: " + this.getSurname()
+				+ " Type: " + typeUser;
+	}
+
 }

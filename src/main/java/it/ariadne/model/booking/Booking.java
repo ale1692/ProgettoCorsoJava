@@ -14,9 +14,6 @@ public class Booking<T extends Resource, U extends User> {
 	private int id;
 	private boolean active;
 
-	public Booking() {
-	}
-
 	public Booking(int id, U utente, T risorsa, DateTime startRisorsa, DateTime endRisorsa) {
 		this.utente = utente;
 		this.risorsa = risorsa;
@@ -78,6 +75,13 @@ public class Booking<T extends Resource, U extends User> {
 		}
 
 		this.active = true;
+	}
+
+	@Override
+	public String toString() {
+
+		return "Booking: " + this.id + " User: " + getUtente().getUserName() + " Resource: ("
+				+ this.getRisorsa().getCode() + ", Type: " + getRisorsa().getClass().getSimpleName() + ")";
 	}
 
 }

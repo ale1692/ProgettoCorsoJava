@@ -9,7 +9,7 @@ import it.ariadne.model.resource.Resource;
 
 public class ResourceDaoImpl <T extends Resource> implements Dao<String, T>  {
 
-	TreeMap<String, T> mappaRisorse;
+	private TreeMap<String, T> mappaRisorse;
 
 	public ResourceDaoImpl() {
 		mappaRisorse = new TreeMap<>();
