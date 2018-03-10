@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
+import org.joda.time.Minutes;
 
 import it.ariadne.dao.Dao;
 import it.ariadne.model.booking.Booking;
@@ -18,9 +19,12 @@ public class BookingController<T extends Resource, U extends User> extends Contr
 		super(bookingDao);
 	}
 
+	/**
+	 * Aggiungo una nuova prenotazione
+	 */
 	@Override
 	public void addRecord(Booking<T, U> t) {
-		List<Booking<T, U>> lista = super.getAllRecords();
+		List<Booking<T, U>> lista = setActiveBookings();
 		Interval intervalList;
 		Interval intervalInput;
 
@@ -62,7 +66,10 @@ public class BookingController<T extends Resource, U extends User> extends Contr
 
 	}
 
-	
+	/**
+	 * 
+	 * @return List<Booking<T, U>> Restuituisce tutte le prenotazioni attive
+	 */
 	public List<Booking<T, U>> getActiveBooking() {
 
 		List<Booking<T, U>> listAllBookings = setActiveBookings();
@@ -77,6 +84,12 @@ public class BookingController<T extends Resource, U extends User> extends Contr
 		return listActiveBookings;
 	}
 
+	/**
+	 * 
+	 * @return List<Booking<T, U>> Restituisce tutte le prenotazioni e setta se sono
+	 *         ancore attive in base alla data di fine.
+	 */
+
 	private List<Booking<T, U>> setActiveBookings() {
 
 		List<Booking<T, U>> listAllBookings = super.getAllRecords();
@@ -89,8 +102,10 @@ public class BookingController<T extends Resource, U extends User> extends Contr
 			booking.setActive();
 			statusBooking = booking.isActive();
 
+			// Faccio l'update sole delle prenotazioni con status modificato (da active=true
+			// a active=false)
 			if (activeBooking != statusBooking) {
-				updateRecord(booking);
+				super.updateRecord(booking);
 				System.out.println("Booking: " + booking.getId() + " Update status booking");
 			}
 
@@ -99,14 +114,22 @@ public class BookingController<T extends Resource, U extends User> extends Contr
 		return listAllBookings;
 	}
 
-	public List<Booking<T, U>> findByTypeActiveResource(T r) {
+	/**
+	 * 
+	 * @param T r
+	 *            
+	 * @return List<Booking<T, U>> Cerca le prenotazioni attive per una tipologia di
+	 *         risorsa
+	 */
+
+	public List<Booking<T, U>> findByTypeResource(String type) {
 
 		List<Booking<T, U>> lista = getActiveBooking();
 		List<Booking<T, U>> listaActive = new ArrayList<>();
 
 		for (Booking<T, U> booking : lista) {
 
-			if (booking.getRisorsa().getClass() == r.getClass()) {
+			if (booking.getRisorsa().getClass().getSimpleName().equals(type)) {
 				listaActive.add(booking);
 			}
 		}
@@ -114,12 +137,19 @@ public class BookingController<T extends Resource, U extends User> extends Contr
 
 	}
 
-	public List<Booking<T,U>> findByActiveResource(T r) {
+	/**
+	 * 
+	 * @param T r
+	 *            
+	 * @return List<Booking<T, U>> Cerca le prenotazioni attive per una determinata
+	 *         risorsa
+	 */
+	public List<Booking<T, U>> findByResource(T r) {
 
-		List<Booking<T,U>> lista = getActiveBooking();
-		List<Booking<T,U>> listaActive = new ArrayList<>();
+		List<Booking<T, U>> lista = getActiveBooking();
+		List<Booking<T, U>> listaActive = new ArrayList<>();
 
-		for (Booking<T,U> booking : lista) {
+		for (Booking<T, U> booking : lista) {
 
 			if (booking.getRisorsa().equals(r)) {
 				listaActive.add(booking);
@@ -129,12 +159,20 @@ public class BookingController<T extends Resource, U extends User> extends Contr
 
 	}
 
-	public List<Booking<T,U>> findByActiveUser(U u) {
+	/**
+	 * 
+	 * @param U u
+	 *            
+	 * @return List<Booking<T, U>> Cerca le prenotazioni attive per un determinato
+	 *         utente
+	 */
 
-		List<Booking<T,U>> lista = getActiveBooking();
-		List<Booking<T,U>> listaActive = new ArrayList<>();
+	public List<Booking<T, U>> findActiveByUser(U u) {
 
-		for (Booking<T,U> booking : lista) {
+		List<Booking<T, U>> lista = getActiveBooking();
+		List<Booking<T, U>> listaActive = new ArrayList<>();
+
+		for (Booking<T, U> booking : lista) {
 
 			if (booking.getUtente().equals(u)) {
 				listaActive.add(booking);
@@ -144,84 +182,145 @@ public class BookingController<T extends Resource, U extends User> extends Contr
 
 	}
 
+	/**
+	 * 
+	 * @param U u
+	 *            
+	 * @return List<Booking<T, U>> Storico delle prenotazioni(quindi non più attive)
+	 *         fatte da un utente
+	 */
+	public List<Booking<T, U>> findPastByUser(U u) {
+
+		List<Booking<T, U>> lista = getActiveBooking();
+		List<Booking<T, U>> listaActive = new ArrayList<>();
+
+		for (Booking<T, U> booking : lista) {
+
+			if (booking.getUtente().equals(u)) {
+				listaActive.add(booking);
+			}
+		}
+		return listaActive;
+
+	}
+
+	/**
+	 * 
+	 * @param r
+	 * @param beginSeachDate
+	 * @param endSeachDate
+	 * @param hours
+	 * @param minutes
+	 * @return DateTime Cerca la prima disponibilità utile di una data risorsa per
+	 *         per quell'intervallo di tempo (beginSeachDate, endSeachDate) e quella
+	 *         durata (hours and minutes)
+	 */
+
 	public DateTime findFirstResourceAvailability(T r, DateTime beginSeachDate, DateTime endSeachDate, int hours,
 			int minutes) {
 
-		List<Booking<T,U>> resourceActiveBookings = findByActiveResource(r);
+		List<Booking<T, U>> resourceActiveBookings = findByResource(r);
+		System.out.println("Resource active: " + resourceActiveBookings.size());
 		DateTime partialEndDate;
 		Interval partialinterval;
 		Interval storedInterval;
-
 		boolean busyinterval = false;
 
-		while (beginSeachDate.isBefore(endSeachDate)) {
+		Minutes computeMinutes = Minutes.minutesBetween(beginSeachDate, endSeachDate);
+		int confrontMinutes = (hours * 60) + minutes;
 
-			partialEndDate = beginSeachDate.plusHours(hours).plusMinutes(minutes);
+		if (computeMinutes.getMinutes() >= confrontMinutes) {
+			while (beginSeachDate.isBefore(endSeachDate)) {
 
-			partialinterval = new Interval(beginSeachDate, partialEndDate);
+				partialEndDate = beginSeachDate.plusHours(hours).plusMinutes(minutes);
 
-			for (Booking<T,U> booking : resourceActiveBookings) {
+				partialinterval = new Interval(beginSeachDate, partialEndDate);
 
-				storedInterval = new Interval(booking.getStartRisorsa(), booking.getEndRisorsa());
+				for (Booking<T, U> booking : resourceActiveBookings) {
 
-				if ((partialinterval.overlaps(storedInterval))) {
-					busyinterval = true;
-					break;
-				} else
-					busyinterval = false;
+					storedInterval = new Interval(booking.getStartRisorsa(), booking.getEndRisorsa());
 
+					if ((partialinterval.overlaps(storedInterval))) {
+						busyinterval = true;
+						break;
+					} else
+						busyinterval = false;
+
+				}
+
+				if (busyinterval == false)
+					return beginSeachDate;
+
+				beginSeachDate = beginSeachDate.plusMinutes(30);
 			}
 
-			if (busyinterval == false)
-				return beginSeachDate;
+		}
 
-			beginSeachDate = beginSeachDate.plusMinutes(30);
+		else {
+			System.out.println("Durata non valida per quel periodo temporale");
+			return null;
 		}
 
 		return null;
 	}
 
-	public Resource findResourceAvailabilityByContraint(T resourceType, int hours, int minutes, int minimumConstraint) {
+	/**
+	 * 
+	 * @param resourceType
+	 * @param beginSeachDate
+	 * @param endSeachDate
+	 * @param hours
+	 * @param minutes
+	 * @param minimumConstraint
+	 * @return Resource
+	 * 
+	 *         Cerca la prima risorsa(esempio Car) disponibile per quell'intervallo
+	 *         di tempo (beginSeachDate, endSeachDate) e quella durata (hours and
+	 *         minutes) con la condizione minimumConstraint
+	 */
+	public Resource findResourceAvailabilityByConstraint(String resourceType, DateTime beginSeachDate,
+			DateTime endSeachDate, int hours, int minutes, int minimumConstraint) {
 
-		DateTime beginSeachDate = new DateTime();
+		List<Booking<T, U>> resourceActiveBookings = findByTypeResource(resourceType);
+		System.out.println("Resource active: " + resourceActiveBookings.size());
+
+		DateTime partialEndDate;
+		Interval partialinterval;
 		Interval storedInterval;
+		Minutes computeMinutes = Minutes.minutesBetween(beginSeachDate, endSeachDate);
+		int confrontMinutes = (hours * 60) + minutes;
 
-		List<Booking<T,U>> resourceActiveBookings = findByActiveResource(resourceType);
-		T r;
-		Booking<T,U> candidateReservation = null;
+		if (computeMinutes.getMinutes() >= confrontMinutes) {
+			while (beginSeachDate.isBefore(endSeachDate)) {
 
-		while (candidateReservation == null) {
+				partialEndDate = beginSeachDate.plusHours(hours).plusMinutes(minutes);
 
-			DateTime endSearchDate = beginSeachDate.plusHours(hours).plusMinutes(minutes);
-			Interval searchInterval = new Interval(beginSeachDate, endSearchDate);
+				partialinterval = new Interval(beginSeachDate, partialEndDate);
 
-			for (Booking<T,U> booking : resourceActiveBookings) {
+				for (Booking<T, U> booking : resourceActiveBookings) {
 
-				r = ((T) booking.getRisorsa());
-
-				if (r.getClass().getSimpleName().equals(resourceType.getClass().getSimpleName())) {
-
-					if (r.searchByConstraint(minimumConstraint)) {
+					if (booking.getRisorsa().searchByConstraint(minimumConstraint)) {
 
 						storedInterval = new Interval(booking.getStartRisorsa(), booking.getEndRisorsa());
 
-						if ((!searchInterval.overlaps(storedInterval))) {
+						if ((!partialinterval.overlaps(storedInterval))) {
 
-							candidateReservation = booking;
-							break;
-
+							System.out.println("Resource: " + booking.getRisorsa().getCode());
+							return booking.getRisorsa();
 						}
-
 					}
 				}
-			}
 
-			beginSeachDate = beginSeachDate.plusHours(30);
+				beginSeachDate = beginSeachDate.plusMinutes(30);
+			}
+			return null;
 
 		}
 
-		return candidateReservation.getRisorsa();
-
+		else {
+			System.out.println("Durata non valida per quel periodo temporale");
+			return null;
+		}
 	}
 
 }

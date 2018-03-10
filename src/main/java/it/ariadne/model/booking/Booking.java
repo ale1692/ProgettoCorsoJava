@@ -84,4 +84,26 @@ public class Booking<T extends Resource, U extends User> {
 				+ this.getRisorsa().getCode() + ", Type: " + getRisorsa().getClass().getSimpleName() + ")";
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + id;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Booking<T, U> other = (Booking<T, U>) obj;
+		if (id != other.id)
+			return false;
+		return true;
+	}
+
 }

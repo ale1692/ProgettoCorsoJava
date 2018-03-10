@@ -41,8 +41,5 @@ public abstract class Controller<K, T> {
 		dao.updateRecord(t);
 
 	}
-	
-	
-
 
 }

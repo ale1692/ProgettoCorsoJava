@@ -29,22 +29,30 @@ public abstract class Resource {
 	}
 
 	@Override
-	public boolean equals(Object o) {
-
-		if (o.getClass().equals(this.getClass())) {
-			Resource r = (Resource) o;
-
-			if (this.getCode() == r.getCode()) {
-				return true;
-			} else {
-				return false;
-			}
-
-		}
-
-		else {
-			return false;
-		}
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((code == null) ? 0 : code.hashCode());
+		return result;
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Resource other = (Resource) obj;
+		if (code == null) {
+			if (other.code != null)
+				return false;
+		} else if (!code.equals(other.code))
+			return false;
+		return true;
+	}
+	
+	
 
 }
