@@ -5,8 +5,8 @@ public class Room extends Resource {
 	private int capacity;
 	private String name;
 
-	public Room(String code, boolean available, int capacity, String name) {
-		super(code, available);
+	public Room(String code, int capacity, String name) {
+		super(code);
 		this.capacity = capacity;
 		this.name = name;
 	}

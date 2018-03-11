@@ -36,12 +36,12 @@ public class TestResource {
 		roomController = new ResourceController<Room>(new ResourceDaoImpl<Room>());
 		laptopController = new ResourceController<Laptop>(new ResourceDaoImpl<Laptop>());
 
-		car1 = new Car("CAR01", true, "ABFDER", 4, BrandCar.FIAT);
-		car2 = new Car("CAR02", false, "RBDGER", 5, BrandCar.MERCEDES);
-		laptop1 = new Laptop("PC001", true, 8, 4, BrandPc.LENOVO);
-		laptop2 = new Laptop("PC002", false, 16, 6, BrandPc.SAMSUNG);
-		room1 = new Room("RA1", true, 20, "Sala A1");
-		room2 = new Room("RA2", false, 80, "Sala A2");
+		car1 = new Car("CAR01", "ABFDER", 4, BrandCar.FIAT);
+		car2 = new Car("CAR02", "RBDGER", 5, BrandCar.MERCEDES);
+		laptop1 = new Laptop("PC001", 8, 4, BrandPc.LENOVO);
+		laptop2 = new Laptop("PC002", 16, 6, BrandPc.SAMSUNG);
+		room1 = new Room("RA1", 20, "Sala A1");
+		room2 = new Room("RA2", 80, "Sala A2");
 	}
 
 	@Test
@@ -57,22 +57,22 @@ public class TestResource {
 		laptopController.addRecord(laptop2);
 		listaLaptop = laptopController.getAllRecords();
 
-		Assert.assertEquals("Risorse memorizzate nel DB", listaCar.size() + listaLaptop.size() + listaRoom.size(), 6);
+		Assert.assertEquals(listaCar.size() + listaLaptop.size() + listaRoom.size(), 6);
 	}
 
-	 @Test
-	 public void testUpdateResource() {
-	
-	roomController.addRecord(room1);
-	room1.setCapacity(25);
-	roomController.updateRecord(room1);
-	listaRoom = roomController.getAllRecords();
-	Assert.assertEquals("Utente modificato", listaRoom.size(), 1);
-	
-	 Room roomTest= (Room) roomController.getRecord(room1.getCode());
-	 Assert.assertEquals("Risorsa modificata", roomTest.getCapacity(), 25);
-	 }
-	
+	@Test
+	public void testUpdateResource() {
+
+		roomController.addRecord(room1);
+		room1.setCapacity(25);
+		roomController.updateRecord(room1);
+		listaRoom = roomController.getAllRecords();
+		Assert.assertEquals("Utente modificato", listaRoom.size(), 1);
+
+		Room roomTest = (Room) roomController.getRecord(room1.getCode());
+		Assert.assertEquals(roomTest.getCapacity(), 25);
+	}
+
 	@Test
 	public void testDeleteResource() {
 
@@ -81,15 +81,27 @@ public class TestResource {
 		laptopController.deleteRecord(laptop2);
 		listaLaptop = laptopController.getAllRecords();
 
-		Assert.assertEquals("Risorsa eliminata", listaLaptop.size(), 0);
+		Assert.assertEquals(listaLaptop.size(), 0);
 	}
 
 	@Test
-	public void testSearch() {
+	public void testSearchCondition() {
 
 		roomController.addRecord(room1);
 		roomController.addRecord(room2);
-		Assert.assertEquals("Filtraggio risorse", roomController.getResourceFiltered(30).size(), 1);
+		Assert.assertEquals(roomController.getResourceFiltered(30).size(), 1);
+
+	}
+
+	@Test
+	public void testAvaibleResources() {
+
+		roomController.addRecord(room1);
+		roomController.addRecord(room2);
+		room2.setAvailable(false);
+		roomController.updateRecord(room2);
+
+		Assert.assertEquals(roomController.getResourcesAvaible().size(), 1);
 
 	}
 

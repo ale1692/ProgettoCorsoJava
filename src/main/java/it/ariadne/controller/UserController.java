@@ -1,14 +1,25 @@
 package it.ariadne.controller;
 
-import it.ariadne.dao.Dao;
+import java.util.ArrayList;
+import java.util.List;
+
+import it.ariadne.dao.UserDaoImpl;
 import it.ariadne.model.user.User;
 
-public class UserController<T extends User> extends Controller<String, T>{
+public class UserController<T extends User> extends Controller<String, T> {
 
-	
-	public UserController(Dao<String, T> userDao) {
+	public UserController(UserDaoImpl<T> userDao) {
 		super(userDao);
 	}
+
+	/**
+	 * 
+	 * @param username
+	 * @param password
+	 * @return T
+	 * 
+	 *         Esempio di controllo di Login
+	 */
 
 	public T performLogin(String username, String password) {
 
@@ -31,6 +42,41 @@ public class UserController<T extends User> extends Controller<String, T>{
 		return null;
 	}
 
-	
-	 
+	/**
+	 * 
+	 * @param penalty
+	 * @param u
+	 *            Metodo che aggiorna i delay dell'utente, se è superiore ai 10
+	 *            giorni l'utente viene penalizzato e non può più effetuare una
+	 *            prenotazione
+	 */
+	public void updatePenaltyUser(int penalty, T u) {
+
+		System.out.println("Ore trascorse dalla consegna alla fine della prenotazione: " + penalty);
+		u.setDelay(penalty);
+		if (u.getDelay() > 240) {
+			u.setPenality(true);
+			super.updateRecord(u);
+
+		}
+
+	}
+
+	/**
+	 * Il metodo restituisce tutti gli user con penalità=true, hanno un ritardo
+	 * totale > 240 ore
+	 */
+	public List<T> getAllUserPenalty() {
+
+		List<T> listResult = new ArrayList<>();
+		for (T lista : super.getAllRecords()) {
+
+			if (lista.isPenality()) {
+				listResult.add(lista);
+			}
+		}
+		;
+		return listResult;
+	}
+
 }

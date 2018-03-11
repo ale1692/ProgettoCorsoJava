@@ -36,7 +36,7 @@ public class TestUser {
 
 		userController.addRecord(u3);
 		lista = userController.getAllRecords();
-		Assert.assertEquals("Utenti memorizzati nel DB", lista.size(), 2);
+		Assert.assertEquals(lista.size(), 2);
 	}
 
 	@Test
@@ -46,7 +46,7 @@ public class TestUser {
 		lista = userController.getAllRecords();
 		Assert.assertEquals("Utente modificato", lista.size(), 1);
 
-		Assert.assertEquals("Utente modificato", userController.getRecord(u2.getUserName()).getRole(), u2.getRole());
+		Assert.assertEquals( userController.getRecord(u2.getUserName()).getRole(), u2.getRole());
 	}
 
 	@Test
@@ -56,21 +56,21 @@ public class TestUser {
 		userController.deleteRecord(u1);
 		lista = userController.getAllRecords();
 		
-		Assert.assertEquals("Utente eliminato",lista.size(),0);
+		Assert.assertEquals(lista.size(),0);
 	}
 	
 	@Test
 	public void testAdmin() {
 		
 		Admin a1=new Admin("Angelo","Sala","ang.12","angelo12", Role.SECRETARY);
-		Assert.assertEquals("Test admin",a1.isAdmin(), true);
+		Assert.assertEquals(a1.isAdmin(), true);
 	}
 	
 	public void testLogin() {
 		
 		User userTest=userController.performLogin("ang.12", "angelo12");
 		
-		Assert.assertEquals("Test login",userTest.getName(), "Angelo");
+		Assert.assertEquals(userTest.getName(), "Angelo");
 	}
 	
 

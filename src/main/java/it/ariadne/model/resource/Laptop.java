@@ -6,8 +6,8 @@ public class Laptop extends Resource {
 	private int numberCores;
 	private BrandPc brand;
 
-	public Laptop(String code, boolean available, int ramCapacity, int numberCores, BrandPc brand) {
-		super(code, available);
+	public Laptop(String code, int ramCapacity, int numberCores, BrandPc brand) {
+		super(code);
 		this.ramCapacity = ramCapacity;
 		this.numberCores = numberCores;
 		this.brand = brand;

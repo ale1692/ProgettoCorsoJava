@@ -13,6 +13,7 @@ public class Booking<T extends Resource, U extends User> {
 	private DateTime endRisorsa;
 	private int id;
 	private boolean active;
+	private DateTime resourceDelivery;
 
 	public Booking(int id, U utente, T risorsa, DateTime startRisorsa, DateTime endRisorsa) {
 		this.utente = utente;
@@ -21,6 +22,7 @@ public class Booking<T extends Resource, U extends User> {
 		this.endRisorsa = endRisorsa;
 		this.id = id;
 		setActive();
+		this.resourceDelivery=this.endRisorsa;
 	}
 
 	public U getUtente() {
@@ -75,6 +77,15 @@ public class Booking<T extends Resource, U extends User> {
 		}
 
 		this.active = true;
+	}
+	
+	
+	public DateTime getResourceDelivery() {
+		return resourceDelivery;
+	}
+
+	public void setResourceDelivery(DateTime resourceDelivery) {
+		this.resourceDelivery = resourceDelivery;
 	}
 
 	@Override

@@ -8,6 +8,8 @@ public class User {
 	private String userName;
 	private boolean isAdmin;
 	private Role role;
+	private boolean penality;
+	private int delay;
 
 	public User(String name, String surname, String password, String userName, Role role) {
 
@@ -17,6 +19,8 @@ public class User {
 		this.userName = userName;
 		this.role = role;
 		setAdmin(false);
+		setDelay(0);
+		setPenality(false);
 	}
 
 	public String getName() {
@@ -65,6 +69,24 @@ public class User {
 
 	public void setRole(Role role) {
 		this.role = role;
+	}
+
+	
+	public boolean isPenality() {
+		return penality;
+	}
+
+	public void setPenality(boolean penality) {
+		
+		this.penality = penality;
+	}
+
+	public int getDelay() {
+		return delay;
+	}
+
+	public void setDelay(int delay) {
+		this.delay = getDelay() + delay;
 	}
 
 	@Override

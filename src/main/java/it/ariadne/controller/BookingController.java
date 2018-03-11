@@ -7,20 +7,22 @@ import org.joda.time.DateTime;
 import org.joda.time.Interval;
 import org.joda.time.Minutes;
 
-import it.ariadne.dao.Dao;
+import it.ariadne.dao.BookingDaoImpl;
 import it.ariadne.model.booking.Booking;
 import it.ariadne.model.resource.Resource;
 import it.ariadne.model.user.User;
 
 public class BookingController<T extends Resource, U extends User> extends Controller<Integer, Booking<T, U>> {
 
-	public BookingController(Dao<Integer, Booking<T, U>> bookingDao) {
+	public BookingController(BookingDaoImpl<T, U> bookingDao) {
 
 		super(bookingDao);
 	}
 
 	/**
-	 * Aggiungo una nuova prenotazione
+	 * Aggiungo una nuova prenotazione, l'azione non va a buon fine se la risorsa
+	 * non è disponibile o l'utente ha una penalità e quindi non può fare altre
+	 * prenotazioni
 	 */
 	@Override
 	public void addRecord(Booking<T, U> t) {
@@ -28,47 +30,74 @@ public class BookingController<T extends Resource, U extends User> extends Contr
 		Interval intervalList;
 		Interval intervalInput;
 
-		if (lista.size() == 0) {
-			super.addRecord(t);
-			System.out.println(t.getRisorsa().getCode());
+		if ((t.getRisorsa().isAvailable() == true) || (t.getUtente().isPenality())) {
+
+			if (lista.size() == 0) {
+				super.addRecord(t);
+				System.out.println(t.getRisorsa().getCode());
+				return;
+			}
+
+			else {
+				for (Booking<T, U> booking : lista) {
+
+					intervalList = new Interval(booking.getStartRisorsa(), booking.getEndRisorsa());
+					intervalInput = new Interval(t.getStartRisorsa(), t.getEndRisorsa());
+
+					if (booking.getId() == t.getId()) {
+						System.out.println("Booking: " + t.getId() + " Id già esiste");
+						return;
+					}
+
+					else if ((intervalList.overlaps(intervalInput))
+							&& (booking.getRisorsa().getCode() == t.getRisorsa().getCode())) {
+
+						System.out.println("Booking: " + t.getId() + " Risorsa: " + t.getRisorsa().getCode()
+								+ " Già prenotata per quel periodo temporale");
+						return;
+
+					}
+
+					else {
+
+						super.addRecord(t);
+						return;
+					}
+
+				}
+			}
+		} else {
+
+			System.out.println("Non è possibile creare una nuova prenotazione per quella risorsa o per quell'utente");
 			return;
 		}
+	}
 
-		else {
-			for (Booking<T, U> booking : lista) {
+	/**
+	 * 
+	 * @param b
+	 * @param deliveryDate
+	 * @return int Metodo che calcola le ore che passano dalla data di consegna
+	 *         alla data pattuita al momento della registrazione della prenotazione
+	 */
 
-				intervalList = new Interval(booking.getStartRisorsa(), booking.getEndRisorsa());
-				intervalInput = new Interval(t.getStartRisorsa(), t.getEndRisorsa());
+	public int setPenalty(Booking<T, U> b, DateTime deliveryDate) {
 
-				if (booking.getId() == t.getId()) {
-					System.out.println("Booking: " + t.getId() + " Id già esiste");
-					return;
-				}
+		if ((!b.isActive()) && (deliveryDate.isAfter(b.getEndRisorsa()))) {
+			DateTime endDate = b.getEndRisorsa();
+			Minutes minutes = Minutes.minutesBetween(endDate, deliveryDate);
+			int penality = (minutes.getMinutes() / 60);
 
-				else if ((intervalList.overlaps(intervalInput))
-						&& (booking.getRisorsa().getCode() == t.getRisorsa().getCode())) {
-
-					System.out.println("Booking: " + t.getId() + " Risorsa: " + t.getRisorsa().getCode()
-							+ " Già prenotata per quel periodo temporale");
-					return;
-
-				}
-
-				else {
-
-					super.addRecord(t);
-					System.out.println(t.getRisorsa().getCode());
-					return;
-				}
-
-			}
+			return penality;
 		}
+
+		return 0;
 
 	}
 
 	/**
 	 * 
-	 * @return List<Booking<T, U>> Restuituisce tutte le prenotazioni attive
+	 * @return List<Booking<T, U>> Restituisce tutte le prenotazioni attive
 	 */
 	public List<Booking<T, U>> getActiveBooking() {
 
@@ -116,8 +145,9 @@ public class BookingController<T extends Resource, U extends User> extends Contr
 
 	/**
 	 * 
-	 * @param T r
-	 *            
+	 * @param T
+	 *            r
+	 * 
 	 * @return List<Booking<T, U>> Cerca le prenotazioni attive per una tipologia di
 	 *         risorsa
 	 */
@@ -139,8 +169,9 @@ public class BookingController<T extends Resource, U extends User> extends Contr
 
 	/**
 	 * 
-	 * @param T r
-	 *            
+	 * @param T
+	 *            r
+	 * 
 	 * @return List<Booking<T, U>> Cerca le prenotazioni attive per una determinata
 	 *         risorsa
 	 */
@@ -161,8 +192,9 @@ public class BookingController<T extends Resource, U extends User> extends Contr
 
 	/**
 	 * 
-	 * @param U u
-	 *            
+	 * @param U
+	 *            u
+	 * 
 	 * @return List<Booking<T, U>> Cerca le prenotazioni attive per un determinato
 	 *         utente
 	 */
@@ -184,8 +216,9 @@ public class BookingController<T extends Resource, U extends User> extends Contr
 
 	/**
 	 * 
-	 * @param U u
-	 *            
+	 * @param U
+	 *            u
+	 * 
 	 * @return List<Booking<T, U>> Storico delle prenotazioni(quindi non più attive)
 	 *         fatte da un utente
 	 */
@@ -288,9 +321,9 @@ public class BookingController<T extends Resource, U extends User> extends Contr
 		Interval partialinterval;
 		Interval storedInterval;
 		Minutes computeMinutes = Minutes.minutesBetween(beginSeachDate, endSeachDate);
-		int confrontMinutes = (hours * 60) + minutes;
+		int comparisonMinutes = (hours * 60) + minutes;
 
-		if (computeMinutes.getMinutes() >= confrontMinutes) {
+		if (computeMinutes.getMinutes() >= comparisonMinutes) {
 			while (beginSeachDate.isBefore(endSeachDate)) {
 
 				partialEndDate = beginSeachDate.plusHours(hours).plusMinutes(minutes);

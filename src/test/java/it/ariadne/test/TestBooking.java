@@ -60,11 +60,11 @@ public class TestBooking {
 
 		u1 = new User("Marco", "Rossi", "prova99", "marco.rossi", Role.DEVELOPER);
 		u2 = new User("Sara", "Fumarola", "asd123", "sarfum", Role.SECRETARY);
-		car1 = new Car("CAR01", true, "ABFDER", 4, BrandCar.FIAT);
-		car2 = new Car("CAR02", true, "LAZFREA", 5, BrandCar.RENAULT);
-		car3 = new Car("CAR03", true, "LAASAEA", 5, BrandCar.FIAT);
-		laptop1 = new Laptop("PC001", true, 8, 4, BrandPc.LENOVO);
-		room1 = new Room("RA1", true, 20, "Sala A1");
+		car1 = new Car("CAR01", "ABFDER", 4, BrandCar.FIAT);
+		car2 = new Car("CAR02", "LAZFREA", 5, BrandCar.RENAULT);
+		car3 = new Car("CAR03", "LAASAEA", 5, BrandCar.FIAT);
+		laptop1 = new Laptop("PC001", 8, 4, BrandPc.LENOVO);
+		room1 = new Room("RA1", 20, "Sala A1");
 
 		userController.addRecord(u1);
 		userController.addRecord(u2);
@@ -92,7 +92,21 @@ public class TestBooking {
 		bookingController.addRecord(b1);
 		bookingController.addRecord(b2);
 		bookingController.addRecord(b3);
-		Assert.assertEquals("Risorse memorizzate nel DB", bookingController.getAllRecords().size(), 3);
+		Assert.assertEquals(bookingController.getAllRecords().size(), 3);
+	}
+
+	@Test
+	public void testAddAvaibleResourceBooking() {
+
+		Laptop laptop2 = new Laptop("PC002", 16, 6, BrandPc.SONY);
+		laptop2.setAvailable(false);
+		laptopController.updateRecord(laptop2);
+		// L'aggiunta di una nuova prenotazione non deve andare a buon fine in quanto la
+		// risorsa non è disponibile
+		Booking<Resource, User> b7 = new Booking<Resource, User>(7, u1, laptop2, new DateTime(2018, 3, 12, 9, 0),
+				new DateTime(2018, 3, 12, 17, 0));
+		bookingController.addRecord(b7);
+		Assert.assertEquals(bookingController.getAllRecords().size(), 0);
 	}
 
 	@Test
@@ -101,7 +115,7 @@ public class TestBooking {
 		bookingController.addRecord(b1);
 		bookingController.addRecord(b4);
 		bookingController.addRecord(b5);
-		Assert.assertEquals("Risorse memorizzate nel DB", bookingController.getActiveBooking().size(), 3);
+		Assert.assertEquals(bookingController.getActiveBooking().size(), 3);
 	}
 
 	@Test
@@ -111,7 +125,7 @@ public class TestBooking {
 		bookingController.addRecord(b4);
 		bookingController.addRecord(b5);
 		String typeRisorsa = resourceUtil.getTypeResource("Macchina Aziendale");
-		Assert.assertEquals("Risorse memorizzate nel DB", bookingController.findByTypeResource(typeRisorsa).size(), 3);
+		Assert.assertEquals(bookingController.findByTypeResource(typeRisorsa).size(), 3);
 	}
 
 	@Test
@@ -120,12 +134,12 @@ public class TestBooking {
 		bookingController.addRecord(b1);
 		bookingController.addRecord(b4);
 		bookingController.addRecord(b5);
-		Assert.assertEquals("Risorse memorizzate nel DB", bookingController.findActiveByUser(u1).size(), 3);
+		Assert.assertEquals(bookingController.findActiveByUser(u1).size(), 3);
 	}
 
 	@Test
 	public void testFindFirstResourceAvailability() {
-		
+
 		bookingController.addRecord(b1);
 		bookingController.addRecord(b4);
 		bookingController.addRecord(b5);
@@ -133,8 +147,8 @@ public class TestBooking {
 		String endD = "12/03/2018 23:00";
 		DateTime startDate = df.parseDateTime(startD);
 		DateTime endDate = df.parseDateTime(endD);
-		DateTime result= bookingController.findFirstResourceAvailability(car2, startDate, endDate, 8, 0);
-		Assert.assertEquals("Risorse memorizzate nel DB", result, null);
+		DateTime result = bookingController.findFirstResourceAvailability(car2, startDate, endDate, 8, 0);
+		Assert.assertEquals(result, null);
 	}
 
 	@Test
@@ -151,6 +165,20 @@ public class TestBooking {
 		String typeRisorsa = resourceUtil.getTypeResource("Macchina Aziendale");
 		Resource r = bookingController.findResourceAvailabilityByConstraint(typeRisorsa, startDate, endDate, 1, 0, 5);
 		Assert.assertEquals("Risorse memorizzate nel DB", r.getCode(), "CAR03");
+
+	}
+
+	@Test
+	public void testPenaltyUser() {
+
+		Booking<Resource, User> b7 = new Booking<Resource, User>(8, u1, car3, new DateTime(2018, 3, 11, 9, 0),
+				new DateTime(2018, 3, 11, 17, 0));
+		bookingController.addRecord(b7);
+		String dateTest = "25/03/2018 12:00";
+		DateTime deliveryDate = df.parseDateTime(dateTest);
+		userController.updatePenaltyUser(bookingController.setPenalty(b7, deliveryDate), b7.getUtente());
+		Assert.assertEquals(b7.getUtente().isPenality(), true);
+		Assert.assertEquals(userController.getAllUserPenalty().size(), 1);
 
 	}
 

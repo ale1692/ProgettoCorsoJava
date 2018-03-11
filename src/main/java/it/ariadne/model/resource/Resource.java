@@ -3,9 +3,10 @@ package it.ariadne.model.resource;
 public abstract class Resource {
 
 	private String code;
+	//Field to indicate if the resource is available or not (for example it is in assistance)
 	private boolean available;
 
-	public Resource(String code, boolean available) {
+	public Resource(String code) {
 		this.code = code;
 		setAvailable(true);
 	}

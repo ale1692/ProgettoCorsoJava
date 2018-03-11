@@ -6,8 +6,8 @@ public class Car extends Resource {
 	private int numberSeat;
 	private BrandCar brand;
 
-	public Car(String code, boolean available, String numberPlate, int numberSeat, BrandCar brand) {
-		super(code, available);
+	public Car(String code,String numberPlate, int numberSeat, BrandCar brand) {
+		super(code);
 		this.numberPlate = numberPlate;
 		this.numberSeat = numberSeat;
 		this.brand = brand;
