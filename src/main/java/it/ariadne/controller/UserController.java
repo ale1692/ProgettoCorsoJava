@@ -46,8 +46,8 @@ public class UserController<T extends User> extends Controller<String, T> {
 	 * 
 	 * @param penalty
 	 * @param u
-	 *            Metodo che aggiorna i delay dell'utente, se è superiore ai 10
-	 *            giorni l'utente viene penalizzato e non può più effetuare una
+	 *            Metodo che aggiorna i delay dell'utente, se è superiore alle 240 ore totali
+	 *            l'utente viene penalizzato e non può più effetuare una
 	 *            prenotazione
 	 */
 	public void updatePenaltyUser(int penalty, T u) {
@@ -63,8 +63,8 @@ public class UserController<T extends User> extends Controller<String, T> {
 	}
 
 	/**
-	 * Il metodo restituisce tutti gli user con penalità=true, hanno un ritardo
-	 * totale > 240 ore
+	 * Il metodo restituisce tutti gli user con penalità=true (hanno un ritardo
+	 * totale > 240 ore)
 	 */
 	public List<T> getAllUserPenalty() {
 

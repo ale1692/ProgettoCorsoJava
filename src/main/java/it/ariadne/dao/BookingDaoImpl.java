@@ -9,10 +9,10 @@ import it.ariadne.model.booking.Booking;
 import it.ariadne.model.resource.Resource;
 import it.ariadne.model.user.User;
 
-public class BookingDaoImpl <T extends Resource, U extends User> implements Dao<Integer, Booking<T, U>> {
+public class BookingDaoImpl<T extends Resource, U extends User> implements Dao<Integer, Booking<T, U>> {
 
 	// mappa con chiave id
-	private TreeMap<Integer, Booking<T,U>> mappaPrenotazioni;
+	private TreeMap<Integer, Booking<T, U>> mappaPrenotazioni;
 
 	public BookingDaoImpl() {
 		mappaPrenotazioni = new TreeMap<>();
@@ -22,9 +22,12 @@ public class BookingDaoImpl <T extends Resource, U extends User> implements Dao<
 	public void addRecord(Booking<T, U> b) {
 		if (!mappaPrenotazioni.containsKey(b.getId())) {
 
-			mappaPrenotazioni.put(b.getId(), b);
-			System.out.println("Booking: " + b.getId() + ", added in the database");
-
+			if (b.getEndRisorsa().isAfter(b.getStartRisorsa())) {
+				mappaPrenotazioni.put(b.getId(), b);
+				System.out.println("Booking: " + b.getId() + ", added in the database");
+			} else {
+				System.out.println("Set the dates correctly");
+			}
 		} else {
 			System.out.println("Booking: " + b.getId() + ", already existed in the database");
 		}
@@ -51,7 +54,7 @@ public class BookingDaoImpl <T extends Resource, U extends User> implements Dao<
 
 		if (mappaPrenotazioni.containsKey(id)) {
 
-			return  mappaPrenotazioni.get(id);
+			return mappaPrenotazioni.get(id);
 		} else {
 			System.out.println("Booking: " + id + ", not present in the database");
 			return null;
@@ -77,9 +80,16 @@ public class BookingDaoImpl <T extends Resource, U extends User> implements Dao<
 
 			System.out.println("Booking does not exist in the database");
 		} else {
-			mappaPrenotazioni.put(b.getId(), b);
-			System.out.println("Booking: " + b.getId() + ", updated in the database");
+
+			if (b.getEndRisorsa().isAfter(b.getStartRisorsa())) {
+				mappaPrenotazioni.put(b.getId(), b);
+				System.out.println("Booking: " + b.getId() + ", updated in the database");
+
+			} else {
+				System.out.println("Set the dates correctly");
+			}
 		}
+
 	}
 
 }

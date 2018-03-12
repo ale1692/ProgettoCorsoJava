@@ -77,7 +77,7 @@ public class BookingController<T extends Resource, U extends User> extends Contr
 	 * 
 	 * @param b
 	 * @param deliveryDate
-	 * @return int Metodo che calcola le ore che passano dalla data di consegna
+	 * @return int, Metodo che calcola le ore che passano dalla data di consegna
 	 *         alla data pattuita al momento della registrazione della prenotazione
 	 */
 
@@ -97,7 +97,7 @@ public class BookingController<T extends Resource, U extends User> extends Contr
 
 	/**
 	 * 
-	 * @return List<Booking<T, U>> Restituisce tutte le prenotazioni attive
+	 * @return List<Booking<T, U>>, Restituisce tutte le prenotazioni attive
 	 */
 	public List<Booking<T, U>> getActiveBooking() {
 
@@ -115,7 +115,7 @@ public class BookingController<T extends Resource, U extends User> extends Contr
 
 	/**
 	 * 
-	 * @return List<Booking<T, U>> Restituisce tutte le prenotazioni e setta se sono
+	 * @return List<Booking<T, U>>, Restituisce tutte le prenotazioni e setta se sono
 	 *         ancore attive in base alla data di fine.
 	 */
 
@@ -148,7 +148,7 @@ public class BookingController<T extends Resource, U extends User> extends Contr
 	 * @param T
 	 *            r
 	 * 
-	 * @return List<Booking<T, U>> Cerca le prenotazioni attive per una tipologia di
+	 * @return List<Booking<T, U>>, Cerca le prenotazioni attive per una tipologia di
 	 *         risorsa
 	 */
 
@@ -172,7 +172,7 @@ public class BookingController<T extends Resource, U extends User> extends Contr
 	 * @param T
 	 *            r
 	 * 
-	 * @return List<Booking<T, U>> Cerca le prenotazioni attive per una determinata
+	 * @return List<Booking<T, U>>, Cerca le prenotazioni attive per una determinata
 	 *         risorsa
 	 */
 	public List<Booking<T, U>> findByResource(T r) {
@@ -195,7 +195,7 @@ public class BookingController<T extends Resource, U extends User> extends Contr
 	 * @param U
 	 *            u
 	 * 
-	 * @return List<Booking<T, U>> Cerca le prenotazioni attive per un determinato
+	 * @return List<Booking<T, U>>, Cerca le prenotazioni attive per un determinato
 	 *         utente
 	 */
 
@@ -219,7 +219,7 @@ public class BookingController<T extends Resource, U extends User> extends Contr
 	 * @param U
 	 *            u
 	 * 
-	 * @return List<Booking<T, U>> Storico delle prenotazioni(quindi non più attive)
+	 * @return List<Booking<T, U>>, Storico delle prenotazioni(quindi non più attive)
 	 *         fatte da un utente
 	 */
 	public List<Booking<T, U>> findPastByUser(U u) {
@@ -244,8 +244,8 @@ public class BookingController<T extends Resource, U extends User> extends Contr
 	 * @param endSeachDate
 	 * @param hours
 	 * @param minutes
-	 * @return DateTime Cerca la prima disponibilità utile di una data risorsa per
-	 *         per quell'intervallo di tempo (beginSeachDate, endSeachDate) e quella
+	 * @return DateTime, Cerca la prima disponibilità utile di una data risorsa per
+	 *         quell'intervallo di tempo (beginSeachDate, endSeachDate) e quella
 	 *         durata (hours and minutes)
 	 */
 

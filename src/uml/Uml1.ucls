@@ -3,7 +3,7 @@
   associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
   <interface id="1" language="java" name="it.ariadne.dao.Dao" project="ProgettoCorsoJava" 
     file="/ProgettoCorsoJava/src/main/java/it/ariadne/dao/Dao.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="53" width="130" x="934" y="140"/>    
+    <position height="53" width="130" x="761" y="175"/>    
     <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="true"/>      
@@ -12,7 +12,7 @@
   </interface>  
   <class id="2" language="java" name="it.ariadne.dao.BookingDaoImpl" project="ProgettoCorsoJava" 
     file="/ProgettoCorsoJava/src/main/java/it/ariadne/dao/BookingDaoImpl.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="53" width="143" x="697" y="364"/>    
+    <position height="53" width="165" x="524" y="399"/>    
     <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="true"/>      
@@ -21,7 +21,7 @@
   </class>  
   <class id="3" language="java" name="it.ariadne.dao.UserDaoImpl" project="ProgettoCorsoJava" 
     file="/ProgettoCorsoJava/src/main/java/it/ariadne/dao/UserDaoImpl.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="53" width="124" x="925" y="370"/>    
+    <position height="53" width="124" x="752" y="405"/>    
     <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="true"/>      
@@ -30,7 +30,7 @@
   </class>  
   <class id="4" language="java" name="it.ariadne.dao.ResourceDaoImpl" project="ProgettoCorsoJava" 
     file="/ProgettoCorsoJava/src/main/java/it/ariadne/dao/ResourceDaoImpl.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1188" y="394"/>    
+    <position height="-1" width="-1" x="1015" y="429"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="true"/>      
@@ -39,7 +39,7 @@
   </class>  
   <class id="5" language="java" name="it.ariadne.controller.Controller" project="ProgettoCorsoJava" 
     file="/ProgettoCorsoJava/src/main/java/it/ariadne/controller/Controller.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="382" y="153"/>    
+    <position height="-1" width="-1" x="274" y="164"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="true"/>      
@@ -49,7 +49,7 @@
   <class id="6" language="java" name="it.ariadne.controller.ResourceController" project="ProgettoCorsoJava" 
     file="/ProgettoCorsoJava/src/main/java/it/ariadne/controller/ResourceController.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="160" y="257"/>    
+    <position height="-1" width="-1" x="52" y="268"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="true"/>      
@@ -59,7 +59,7 @@
   <class id="7" language="java" name="it.ariadne.controller.UserController" project="ProgettoCorsoJava" 
     file="/ProgettoCorsoJava/src/main/java/it/ariadne/controller/UserController.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="315" y="348"/>    
+    <position height="-1" width="-1" x="207" y="359"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="true"/>      
@@ -69,47 +69,47 @@
   <class id="8" language="java" name="it.ariadne.controller.BookingController" project="ProgettoCorsoJava" 
     file="/ProgettoCorsoJava/src/main/java/it/ariadne/controller/BookingController.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="534" y="353"/>    
+    <position height="-1" width="-1" x="426" y="364"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="true"/>      
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <realization id="9">    
-    <end type="SOURCE" refId="2"/>    
-    <end type="TARGET" refId="1"/>  
-  </realization>  
-  <realization id="10">    
-    <end type="SOURCE" refId="3"/>    
-    <end type="TARGET" refId="1"/>  
-  </realization>  
-  <generalization id="11">    
-    <end type="SOURCE" refId="6"/>    
-    <end type="TARGET" refId="5"/>  
-  </generalization>  
-  <generalization id="12">    
+  <generalization id="9">    
     <end type="SOURCE" refId="7"/>    
     <end type="TARGET" refId="5"/>  
   </generalization>  
-  <association id="13">    
+  <generalization id="10">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="5"/>  
+  </generalization>  
+  <realization id="11">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="1"/>  
+  </realization>  
+  <association id="12">    
     <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="14" name="dao">        
-        <position height="0" width="0" x="-19" y="19"/>      
+      <attribute id="13" name="dao">        
+        <position height="0" width="0" x="-192" y="54"/>      
       </attribute>      
-      <multiplicity id="15" minimum="0" maximum="1">        
-        <position height="0" width="0" x="-19" y="19"/>      
+      <multiplicity id="14" minimum="0" maximum="1">        
+        <position height="0" width="0" x="-192" y="54"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="1" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <generalization id="16">    
+  <generalization id="15">    
     <end type="SOURCE" refId="8"/>    
     <end type="TARGET" refId="5"/>  
   </generalization>  
+  <realization id="16">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="1"/>  
+  </realization>  
   <realization id="17">    
-    <end type="SOURCE" refId="4"/>    
+    <end type="SOURCE" refId="3"/>    
     <end type="TARGET" refId="1"/>  
   </realization>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 

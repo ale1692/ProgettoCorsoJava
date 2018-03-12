@@ -182,4 +182,14 @@ public class TestBooking {
 
 	}
 
+	@Test
+	public void testBookingValidity() {
+
+		Booking<Resource, User> b7 = new Booking<Resource, User>(8, u1, car3, new DateTime(2018, 3, 11, 15, 0),
+				new DateTime(2018, 3, 11, 12, 0));
+		bookingController.addRecord(b7);
+		Assert.assertEquals(bookingController.getAllRecords().size(), 0);
+
+	}
+
 }
