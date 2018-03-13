@@ -73,17 +73,17 @@ public class TestBooking {
 		roomController.addRecord(room1);
 		laptopController.addRecord(laptop1);
 
-		b1 = new Booking<Resource, User>(1, u1, car1, new DateTime(2018, 3, 12, 15, 0),
-				new DateTime(2018, 3, 12, 17, 0));
+		b1 = new Booking<Resource, User>(1, u1, car1, new DateTime(2018, 3, 15, 15, 0),
+				new DateTime(2018, 3, 15, 17, 0));
 		b2 = new Booking<Resource, User>(2, u2, laptop1, new DateTime(2018, 3, 4, 10, 0),
 				new DateTime(2018, 3, 4, 18, 0));
 		b3 = new Booking<Resource, User>(3, u1, room1, new DateTime(2018, 3, 1, 9, 0), new DateTime(2018, 3, 1, 18, 0));
-		b4 = new Booking<Resource, User>(5, u1, car1, new DateTime(2018, 3, 12, 19, 0),
-				new DateTime(2018, 3, 12, 19, 50));
-		b5 = new Booking<Resource, User>(6, u1, car2, new DateTime(2018, 3, 12, 9, 0),
-				new DateTime(2018, 3, 12, 18, 0));
-		b6 = new Booking<Resource, User>(7, u1, car3, new DateTime(2018, 3, 12, 9, 0),
-				new DateTime(2018, 3, 12, 17, 0));
+		b4 = new Booking<Resource, User>(5, u1, car1, new DateTime(2018, 3, 15, 19, 0),
+				new DateTime(2018, 3, 15, 19, 50));
+		b5 = new Booking<Resource, User>(6, u1, car2, new DateTime(2018, 3, 15, 9, 0),
+				new DateTime(2018, 3, 15, 18, 0));
+		b6 = new Booking<Resource, User>(7, u1, car3, new DateTime(2018, 3, 15, 9, 0),
+				new DateTime(2018, 3, 15, 17, 0));
 	}
 
 	@Test
@@ -103,8 +103,8 @@ public class TestBooking {
 		laptopController.updateRecord(laptop2);
 		// L'aggiunta di una nuova prenotazione non deve andare a buon fine in quanto la
 		// risorsa non è disponibile
-		Booking<Resource, User> b7 = new Booking<Resource, User>(7, u1, laptop2, new DateTime(2018, 3, 12, 9, 0),
-				new DateTime(2018, 3, 12, 17, 0));
+		Booking<Resource, User> b7 = new Booking<Resource, User>(7, u1, laptop2, new DateTime(2018, 3, 15, 9, 0),
+				new DateTime(2018, 3, 15, 17, 0));
 		bookingController.addRecord(b7);
 		Assert.assertEquals(bookingController.getAllRecords().size(), 0);
 	}
@@ -164,7 +164,7 @@ public class TestBooking {
 		DateTime endDate = df.parseDateTime(endD);
 		String typeRisorsa = resourceUtil.getTypeResource("Macchina Aziendale");
 		Resource r = bookingController.findResourceAvailabilityByConstraint(typeRisorsa, startDate, endDate, 1, 0, 5);
-		Assert.assertEquals("Risorse memorizzate nel DB", r.getCode(), "CAR03");
+		Assert.assertEquals("Risorse memorizzate nel DB", r.getCode(), "CAR02");
 
 	}
 
